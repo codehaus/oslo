@@ -4,6 +4,7 @@ import org.prevayler.Prevayler;
 import org.oslo.common.cli.CommandLineInterpreter;
 import org.oslo.common.prevayler.persistance.PrevaylerPersister;
 import org.oslo.common.prevayler.system.RantSystem;
+import org.oslo.common.plugin.ClassDiscoveryService;
 import org.oslo.plugins.sequenceplugin.cli.SequenceConsoleCommands;
 import org.oslo.plugins.performanceplugin.cli.PeformanceConsoleCommands;
 import org.oslo.cli.base.BaseConsoleCommands;
@@ -22,7 +23,7 @@ public class CommandLine {
     private Hashtable commandLinePluginCommands = new Hashtable();
     private ArrayList interpreters = new ArrayList();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         new CommandLine().executeConsole();
     }
 
@@ -34,17 +35,27 @@ public class CommandLine {
         System.out.println("-- FINISHED INITIALIZING SYSTEM -----------------------------------------------");
     }
 
-    public void executeConsole() {
+    public void executeConsole() throws Exception {
         // Initialize prevayler
         intialize();
 
         // Add all the commands
-        addCommands(new SequenceConsoleCommands());
+        /*addCommands(new SequenceConsoleCommands());
         addCommands(new PeformanceConsoleCommands());
         addCommands(new BaseConsoleCommands());
         interpreters.add(new SequenceConsoleCommands());
         interpreters.add(new PeformanceConsoleCommands());
-        interpreters.add(new BaseConsoleCommands());
+        interpreters.add(new BaseConsoleCommands());   */
+
+        ArrayList plugins = ClassDiscoveryService.discoverPlugins(CommandLineInterpreter.class.getName());
+
+        // Get the plugins, instantiate them and register them
+        for (Iterator iterator = plugins.iterator(); iterator.hasNext();) {
+            String className = (String) iterator.next();
+            CommandLineInterpreter interpreter = (CommandLineInterpreter)Class.forName(className).newInstance();
+            addCommands(interpreter);
+            interpreters.add(interpreter);
+        }
 
         try {
             // Ok now we need to execute and read

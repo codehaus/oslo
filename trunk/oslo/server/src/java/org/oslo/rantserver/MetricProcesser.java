@@ -9,7 +9,8 @@ package org.oslo.rantserver;
 
 import org.oslo.common.datamodel.metric.Metric;
 import org.oslo.common.plugin.Plugin;
-import org.oslo.common.plugin.PluginDiscoveryService;
+import org.oslo.common.plugin.ClassDiscoveryService;
+import org.oslo.common.plugin.PluginImpl;
 
 import java.util.*;
 import java.util.jar.JarInputStream;
@@ -50,7 +51,7 @@ public class MetricProcesser {
                 System.out.println("Added pluginclass: " + className + " with tag: " + tag);
             }
         } */
-        ArrayList pluginsList = PluginDiscoveryService.discoverPlugins();
+        ArrayList pluginsList = ClassDiscoveryService.discoverPlugins(PluginImpl.class.getName());
 
         //System.out.println("Hello");
         for (Iterator iterator = pluginsList.iterator(); iterator.hasNext();) {
