@@ -11,6 +11,11 @@ import org.oslo.server.prevayler.datamodel.metric.Metric;
 import org.oslo.server.plugin.Plugin;
 
 import java.util.*;
+import java.util.jar.JarInputStream;
+import java.util.jar.JarEntry;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileInputStream;
 
 public class MetricProcesser {
     private static MetricProcesser ourInstance;
@@ -26,7 +31,7 @@ public class MetricProcesser {
 
     private MetricProcesser() throws Exception {
         // Set up all the plugins we need to create
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("rantserver");
+        /*ResourceBundle resourceBundle = ResourceBundle.getBundle("rantserver");
         Enumeration keys = resourceBundle.getKeys();
 
         while (keys.hasMoreElements()) {
@@ -43,8 +48,26 @@ public class MetricProcesser {
                 plugins.put(tag, Class.forName(className).newInstance());
                 System.out.println("Added pluginclass: " + className + " with tag: " + tag);
             }
+        } */
+        ArrayList pluginsList = PluginDiscoveryService.discoverPlugins();
+
+        //System.out.println("Hello");
+        for (Iterator iterator = pluginsList.iterator(); iterator.hasNext();) {
+            String plugin = (String) iterator.next();
+
+            if (!plugins.containsKey(plugin)) {
+                Plugin pluginInstance = (Plugin)Class.forName(plugin).newInstance();
+
+                plugins.put(pluginInstance.getIdentifier(), pluginInstance);
+                System.out.println("Added pluginclass: " + plugin + " with tag: " + pluginInstance.getIdentifier());
+            }
         }
+
+        // Discover all available plugins in the classpath and register them with the server
+        //System.getProperty()
     }
+
+
 
     public ArrayList parseMetrics(String metricString) throws Exception {
         // Ok we now have the metric String, we need to figure out what kind of plugin this matches too, by
@@ -52,7 +75,7 @@ public class MetricProcesser {
 
         ArrayList metricStrings = new ArrayList();
 
-        while(metricString.indexOf("[") != -1) {
+        while (metricString.indexOf("[") != -1) {
             // Get the start position
             //int startIndex = metricStrings.indexOf("[");
             int startOfEndIndex = metricString.indexOf("[/");

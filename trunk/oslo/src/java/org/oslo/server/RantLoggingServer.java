@@ -33,6 +33,17 @@ public class RantLoggingServer {
     }
 
     public void start() throws Exception {
+        // Get the socket the server listens on, if one is provided
+        String socket = System.getProperty("server.socket");
+
+        int socketPort = 0;
+        try {
+            socketPort = Integer.parseInt(socket);
+        } catch (NumberFormatException e) {
+            // Ignore, uses default value
+            //e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+        }
+
         System.out.println("Listening on port: " + socketPort);
 
         //Allocate an unbound server socket channel
@@ -77,7 +88,6 @@ public class RantLoggingServer {
                     // The advices can use to ensure that we can track a specific applications
                     // metrics
                     sendInstanceKey(channel);
-                    //sayHello(channel);
                 }
 
                 // Is there data to read on this channel?
