@@ -1,1 +1,1 @@
-java -cp ./devlib/prevayler/jars/prevayler-2.00.000dev.jar:./devlib/sequence/jars/sequence-1.0:./target/classes org.oslo.console.cli.CommandLine
+java -cp ./devlib/prevayler/jars/prevayler-2.00.000dev.jar:./devlib/sequence/jars/sequence-1.0.jar:./target/classes org.oslo.console.cli.CommandLine

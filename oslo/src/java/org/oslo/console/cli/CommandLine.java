@@ -93,6 +93,8 @@ public class CommandLine {
                 System.out.print("COMMAND:> ");
                 inputLine = reader.readLine();
             }
+
+            System.exit(1);
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use Options | File Templates.
         }
