@@ -173,6 +173,7 @@
             <jvmarg value="-Daspectwerkz.definition.file=${maven.src.dir}/aspectwerkz/oslo.xml"/>
             <jvmarg value="-Daspectwerkz.home=${basedir}"/>
             <jvmarg value="-Daspectwerkz.metadata.dir=${maven.build.dir}/_metaData"/>
+            <jvmarg value="-Doslo.id.number=testApp_31_07_03"/>
         </java>
 
         <!-- Load the output and display it -->

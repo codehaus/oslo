@@ -39,6 +39,7 @@ public class MetricLogger {
             // Ok, set the server host url and port
             String serverState = System.getProperty("oslo.server.use");
             String portString = System.getProperty("oslo.server.port");
+            processId = System.getProperty("oslo.id.number");
             String filedir = System.getProperty("oslo.file.directory");
             String filepre = System.getProperty("oslo.file.prefix");
 
@@ -83,15 +84,15 @@ public class MetricLogger {
                 //Initialize the socket
                 socket = new Socket(url, port);
                 bufferedOutputStream = new BufferedOutputStream(socket.getOutputStream());
-                bufferedInputStream = new BufferedInputStream(socket.getInputStream());
+                //bufferedInputStream = new BufferedInputStream(socket.getInputStream());
 
                 //Create outputStream
-                byte[] inBytes = null;
+                //byte[] inBytes = null;
 
                 // Ok try to get a sequenceplugin number, timeout after ten seconds.
-                long currentTime = System.currentTimeMillis() + 10000;
+                //long currentTime = System.currentTimeMillis() + 10000;
 
-                while (System.currentTimeMillis() < currentTime) {
+                /*while (System.currentTimeMillis() < currentTime) {
                     if (bufferedInputStream.available() != 0) {
                         inBytes = new byte[bufferedInputStream.available()];
                         bufferedInputStream.read(inBytes);
@@ -103,7 +104,7 @@ public class MetricLogger {
 
                 if (inBytes != null) {
                     processId = new String(inBytes);
-                }
+                } */
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use Options | File Templates.
             }

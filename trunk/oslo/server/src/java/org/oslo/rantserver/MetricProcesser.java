@@ -51,6 +51,7 @@ public class MetricProcesser {
                 System.out.println("Added pluginclass: " + className + " with tag: " + tag);
             }
         } */
+        System.out.println("Adding classes");
         ArrayList pluginsList = ClassDiscoveryService.discoverPlugins(PluginImpl.class.getName());
 
         //System.out.println("Hello");
@@ -69,7 +70,9 @@ public class MetricProcesser {
         //System.getProperty()
     }
 
-
+    public HashMap getPlugins() {
+        return plugins;
+    }
 
     public ArrayList parseMetrics(String metricString) throws Exception {
         // Ok we now have the metric String, we need to figure out what kind of plugin this matches too, by
