@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project>
+    <extends>${basedir}/../project.xml</extends>
+    <pomVersion>3</pomVersion>
+    <id>oslo-plugins</id>
+    <currentVersion>0.1</currentVersion>
+    <groupId>oslo</groupId>
+    <name>oslo-plugins</name>
+
+    <!-- build information for the project -->
+    <build>
+        <nagEmailAddress>christian@inx-soft.com</nagEmailAddress>
+        <sourceDirectory>src/java</sourceDirectory>
+        <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+        <unitTest>
+            <includes>
+                <include>**/*Test.java</include>
+            </includes>
+            <excludes>
+                <exclude>**/NaughtyTest.java</exclude>
+            </excludes>
+        </unitTest>
+
+        <resources>
+            <resource>
+                <directory>src/conf</directory>
+                <includes>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>

@@ -1,0 +1,10 @@
+<project
+    default="default"
+    xmlns:m="maven"
+    xmlns:j="jelly:core">
+
+    <goal name="default" prereqs="java:compile, jar:jar, jar:install">
+
+    </goal>
+</project>
+
