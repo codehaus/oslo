@@ -100,7 +100,7 @@
         <echo>${message}</echo>
     </goal>
 
-    <goal name="oslo:start:server">
+    <goal name="oslo:start:server" prereqs="oslo:cleanup, oslo:aspectwerkz:preprocess">
         <!-- ClassPath for the sample file -->
         <path id="execute.path">
             <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
@@ -114,6 +114,15 @@
         <!-- Load the output and display it -->
         <loadfile property="message" srcFile="java.output"/>
         <echo>${message}</echo>
+    </goal>
+
+    <goal name="oslo:cleanup">
+        <delete dir="${maven.build.dir}"/>
+        <delete file="java.output"/>
+        <delete file="server.java.output"/>
+        <delete>
+            <fileset dir="database" includes="*"/>
+        </delete>
     </goal>
 
     <goal name="oslo:execute:sequence-gui">

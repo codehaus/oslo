@@ -11,47 +11,27 @@ import org.oslo.plugins.sequence.SequencePlugin;
  * To change this template use Options | File Templates.
  */
 public class SequenceMetric extends Metric {
-    private String fromMethodName;
-    private String fromClassName;
-    private String toMethodName;
-    private String toMethodClass;
+    private String targetClass;
+    private String targetMethodName;
 
-    public SequenceMetric(String fromMethodName, String fromClassName, String toMethodName, String toMethodClass) {
-        this.fromMethodName = fromMethodName;
-        this.fromClassName = fromClassName;
-        this.toMethodName = toMethodName;
-        this.toMethodClass = toMethodClass;
+    public SequenceMetric(String targetClass, String targetMethodName) {
+        this.targetClass = targetClass;
+        this.targetMethodName = targetMethodName;
     }
 
-    public String getFromMethodName() {
-        return fromMethodName;
+    public String getTargetClass() {
+        return targetClass;
     }
 
-    public void setFromMethodName(String fromMethodName) {
-        this.fromMethodName = fromMethodName;
+    public void setTargetClass(String targetClass) {
+        this.targetClass = targetClass;
     }
 
-    public String getFromClassName() {
-        return fromClassName;
+    public String getTargetMethodName() {
+        return targetMethodName;
     }
 
-    public void setFromClassName(String fromClassName) {
-        this.fromClassName = fromClassName;
-    }
-
-    public String getToMethodName() {
-        return toMethodName;
-    }
-
-    public void setToMethodName(String toMethodName) {
-        this.toMethodName = toMethodName;
-    }
-
-    public String getToMethodClass() {
-        return toMethodClass;
-    }
-
-    public void setToMethodClass(String toMethodClass) {
-        this.toMethodClass = toMethodClass;
+    public void setTargetMethodName(String targetMethodName) {
+        this.targetMethodName = targetMethodName;
     }
 }

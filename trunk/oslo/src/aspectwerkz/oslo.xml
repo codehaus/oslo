@@ -10,9 +10,13 @@
         deployment-model="perJVM"
         />
 
-    <!--<advice name="sequence"
+    <advice name="sequence"
         advice="org.oslo.aspects.sequence.SequenceAdvice"
-        deployment-model="perJVM"/> -->
+        deployment-model="perJVM"/>
+
+    <advice name="callersidesequence"
+        advice="org.oslo.aspects.sequence.SequenceCallerSideAdvice"
+        deployment-model="perJVM"/>
 
     <!--<aspect class="org.oslo.sample.*">
         <pointcut type="method" pattern="* do*(..)">
@@ -21,13 +25,18 @@
     </aspect>-->
 
     <aspect class="org.oslo.sample.*">
-        <!--<pointcut type="callerSide" pattern="*#* d*(..)">
+        <pointcut type="callerSide" pattern="*#* d*(..)">
+            <advice-ref name="callersidesequence"/>
+        </pointcut>
+
+        <pointcut type="method" pattern="* *(..)">
             <advice-ref name="sequence"/>
-        </pointcut>     -->
+        </pointcut>
+
         <introduction-ref name="processid"/>
 
-        <pointcut type="method" pattern="* do*(..)">
+        <!--<pointcut type="method" pattern="* do*(..)">
             <advice-ref name="logging"/>
-        </pointcut>
+        </pointcut>-->
     </aspect>
 </aspectwerkz>

@@ -18,10 +18,8 @@ public class SequencePluginTest extends TestCase {
         assertNotNull(sequenceMetric);
 
         // Validate that the information is correct
-        assertEquals("fromMethod", sequenceMetric.getFromMethodName());
-        assertEquals("fromClass", sequenceMetric.getFromClassName());
-        assertEquals("toMethod", sequenceMetric.getToMethodName());
-        assertEquals("toClass", sequenceMetric.getToMethodClass());
+        assertEquals("targetClass", sequenceMetric.getTargetClass());
+        assertEquals("targetMethodName", sequenceMetric.getTargetMethodName());
         assertEquals("1234567", sequenceMetric.getProcessId());
     }
 
