@@ -2,7 +2,7 @@ package org.oslo.client;
 
 import org.prevayler.implementation.SnapshotPrevayler;
 import org.prevayler.util.clock.ClockActor;
-import org.oslo.server.prevayler.system.RantSystem;
+import org.oslo.rantserver.prevayler.system.RantSystem;
 import org.apache.commons.jxpath.JXPathContext;
 
 import java.io.IOException;

@@ -1,14 +1,14 @@
-package org.oslo.server.thread;
+package org.oslo.rantserver.thread;
 
-import org.oslo.server.prevayler.persistance.PrevaylerPersister;
-import org.oslo.server.prevayler.system.RantSystem;
-import org.oslo.server.MetricProcesser;
+import org.oslo.rantserver.prevayler.persistance.PrevaylerPersister;
+import org.oslo.rantserver.prevayler.system.RantSystem;
+import org.oslo.rantserver.MetricProcesser;
 import org.oslo.common.datamodel.metric.Metric;
 import org.prevayler.Prevayler;
 import org.oslo.common.datamodel.process.Process;
 import org.oslo.common.datamodel.group.MetricGroup;
-import org.oslo.server.prevayler.transaction.process.ProcessCreateTransaction;
-import org.oslo.server.prevayler.transaction.process.ProcessUpdateTransaction;
+import org.oslo.rantserver.prevayler.transaction.process.ProcessCreateTransaction;
+import org.oslo.rantserver.prevayler.transaction.process.ProcessUpdateTransaction;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
