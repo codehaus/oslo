@@ -48,7 +48,7 @@
         </schemaexport>
     </goal>-->
 
-    <goal name="build-all" description="Build all components using reactor">
+    <goal name="build-all" prereqs="clean-all" description="Build all components using reactor">
         <maven:reactor
             basedir="${basedir}"
             includes="*/project.xml"
@@ -87,34 +87,38 @@
             definitionFile="${maven.src.dir}/aspectwerkz/oslo.xml"
             repository="${maven.build.dir}/classes"
             metaDataDir="${maven.build.dir}/_metaData"/>-->
+        <!-- Preprocess the class files -->
+        <path id="aspectwerkz.fixed.classpath">
+            <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-client-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-common-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-plugins-0.1.jar"/>
+            <pathelement path="${maven.src.dir}/config"/>
+            <path refid="maven.dependency.classpath"/>
+        </path>
+
         <!-- Create the meta data weave -->
-        <java classname="org.codehaus.aspectwerkz.definition.metadata.ClassFileMetaDataCompiler" fork="true" classpathref="maven.dependency.classpath" output="java.output">
+        <java classname="org.codehaus.aspectwerkz.metadata.ClassFileMetaDataCompiler" fork="true" classpathref="aspectwerkz.fixed.classpath" output="java.output">
+            <jvmarg value="-Daspectwerkz.definition.validate=true"/>
             <arg value="${maven.src.dir}/aspectwerkz/oslo.xml"/>
             <arg value="./sample/target/classes"/>
             <arg value="${maven.build.dir}/_metaData"/>
         </java>
 
-
-        <!-- Preprocess the class files -->
-        <path id="aspectwerkz.fixed.classpath">
-            <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
-            <path refid="maven.dependency.classpath"/>
-        </path>
-
         <java classname="org.cs3.jmangler.offline.starter.Main" classpathref="aspectwerkz.fixed.classpath" fork="true" append="true" output="java.output">
             <jvmarg value="-Daspectwerkz.definition.file=${maven.src.dir}/aspectwerkz/oslo.xml"/>
-            <jvmarg value="-Daspectwerkz.src.dir="/>
             <jvmarg value="-Daspectwerkz.home=${maven.src.dir}"/>
             <jvmarg value="-Daspectwerkz.metadata.dir=${maven.build.dir}/_metaData"/>
             <jvmarg value="-Dorg.cs3.jmangler.initfile=${maven.src.dir}/config/jmangler-order.config"/>
             <arg value="--cp"/>
             <arg value="./sample/target/classes"/>
             <arg value="--tcp"/>
-            <arg value="${basedir}/devlib/aspectwerkz/jars/aspectwerkz-0.5.jar"/>
+            <arg value="${basedir}/devlib/aspectwerkz/jars/aspectwerkz-0.7.4.jar"/>
             <arg value="--cf"/>
             <arg value="${maven.src.dir}/config/aspectwerkz.conf"/>
-        </java>
+        </java> -->
 
+        <!--<jvmarg value="-Daspectwerkz.metadata.dir=${maven.build.dir}/_metaData"/>-->
 
         <!--<offlineTransformation
             aspectWerkzHome="${env.ASPECTWERKZ_HOME}"
@@ -132,6 +136,9 @@
         <path id="execute.path">
             <pathelement path="./sample/target/classes"/>
             <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-client-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-common-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-plugins-0.1.jar"/>
             <path refid="maven.dependency.classpath"/>
         </path>
 
@@ -154,17 +161,21 @@
         -->
 
         <!-- ClassPath for the sample file -->
-        <!--<path id="execute.path">
+        <path id="execute.path">
             <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
             <path refid="maven.dependency.classpath"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-common-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-plugins-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-server-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-console-0.1.jar"/>
             <pathelement path="${maven.build.dir}/classes"/>
         </path>
 
         <property name="cp" refid="execute.path"/>
-        <echo>${cp}</echo> -->
+        <echo>${cp}</echo>
 
         <!-- Execute the sample class with or without the aspects -->
-        <!--<java classname="org.oslo.cli.CommandLine" fork="true" classpathref="execute.path" />-->
+        <java classname="org.oslo.cli.CommandLine" fork="false" classpathref="execute.path" />
     </goal>
 
     <goal name="oslo:start:server" prereqs="oslo:cleanup, oslo:aspectwerkz:preprocess">
@@ -177,7 +188,6 @@
             <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-plugins-0.1.jar"/>
             <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-server-0.1.jar"/>
             <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-console-0.1.jar"/>
-            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-client-0.1.jar"/>
             <path refid="maven.dependency.classpath"/>
             <pathelement path="${maven.src.dir}/properties"/>
         </path>
