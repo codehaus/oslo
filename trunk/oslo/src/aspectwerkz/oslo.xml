@@ -4,7 +4,20 @@
         advice="org.oslo.aspects.LoggingAdvice"
         deployment-model="perJVM"/>
 
+    <advice name="sequence"
+        advice="org.oslo.aspects.sequence.SequenceAdvice"
+        deployment-model="perJVM"/>
+
+    <!--<aspect class="org.oslo.sample.*">
+        <pointcut type="method" pattern="* do*(..)">
+            <advice-ref name="logging"/>
+        </pointcut>
+    </aspect>-->
+
     <aspect class="org.oslo.sample.*">
+        <pointcut type="callerSide" pattern="*#* d*(..)">
+            <advice-ref name="sequence"/>
+        </pointcut>
         <pointcut type="method" pattern="* do*(..)">
             <advice-ref name="logging"/>
         </pointcut>

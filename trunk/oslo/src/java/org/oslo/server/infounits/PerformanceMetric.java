@@ -1,5 +1,7 @@
 package org.oslo.server.infounits;
 
+import org.oslo.server.metric.Metric;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -10,7 +12,7 @@ import java.io.Serializable;
  * Time: 11:08:34 PM
  * To change this template use Options | File Templates.
  */
-public class PerformanceMetric implements Serializable {
+public class PerformanceMetric extends Metric implements Serializable {
     private int id;
     private String className;
     private String methodeName;
