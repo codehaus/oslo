@@ -76,4 +76,18 @@
         <loadfile property="message" srcFile="java.output"/>
         <echo>${message}</echo>
     </goal>
+
+    <goal name="oslo:start:server">
+        <!-- ClassPath for the sample file -->
+        <path id="execute.path">
+            <path refid="maven.dependency.classpath"/>
+            <pathelement path="${maven.build.dir}/classes"/>
+        </path>
+
+        <java classname="org.oslo.server.RantLoggingServer" fork="true" classpathref="execute.path" output="java.output"/>
+
+        <!-- Load the output and display it -->
+        <loadfile property="message" srcFile="java.output"/>
+        <echo>${message}</echo>
+    </goal>
 </project>
