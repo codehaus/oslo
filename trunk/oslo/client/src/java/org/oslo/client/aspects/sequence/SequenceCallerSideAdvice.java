@@ -1,4 +1,4 @@
-package org.oslo.aspects.sequence;
+package org.oslo.client.aspects.sequence;
 
 import org.codehaus.aspectwerkz.advice.PreAdvice;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;

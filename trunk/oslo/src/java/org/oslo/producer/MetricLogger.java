@@ -88,7 +88,7 @@ public class MetricLogger {
                 //Create outputStream
                 byte[] inBytes = null;
 
-                // Ok try to get a sequence number, timeout after ten seconds.
+                // Ok try to get a sequenceplugin number, timeout after ten seconds.
                 long currentTime = System.currentTimeMillis() + 10000;
 
                 while (System.currentTimeMillis() < currentTime) {
