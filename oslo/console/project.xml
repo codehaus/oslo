@@ -33,6 +33,17 @@
             <artifactId>oslo-plugins</artifactId>
             <version>0.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>oslo</groupId>
+            <artifactId>oslo-server</artifactId>
+            <version>0.1</version>
+        </dependency>
+        <!-- Other dependencies -->
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <!-- build information for the project -->
@@ -49,14 +60,5 @@
                 <exclude>**/NaughtyTest.java</exclude>
             </excludes>
         </unitTest>
-
-        <resources>
-            <resource>
-                <directory>src/conf</directory>
-                <includes>
-                    <include>*.properties</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
 </project>

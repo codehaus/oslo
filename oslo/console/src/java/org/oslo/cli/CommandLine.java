@@ -4,7 +4,8 @@ import org.prevayler.Prevayler;
 import org.oslo.common.cli.CommandLineInterpreter;
 import org.oslo.rantserver.prevayler.persistance.PrevaylerPersister;
 import org.oslo.rantserver.prevayler.system.RantSystem;
-import org.oslo.plugins.sequenceplugin.plugin.SequencePlugin;
+import org.oslo.plugins.sequenceplugin.cli.SequenceConsoleCommands;
+import org.oslo.plugins.performanceplugin.cli.PeformanceConsoleCommands;
 import org.oslo.cli.base.BaseConsoleCommands;
 
 import java.util.*;
@@ -38,9 +39,11 @@ public class CommandLine {
         intialize();
 
         // Add all the commands
-        addCommands(new SequencePlugin());
+        addCommands(new SequenceConsoleCommands());
+        addCommands(new PeformanceConsoleCommands());
         addCommands(new BaseConsoleCommands());
-        interpreters.add(new SequencePlugin());
+        interpreters.add(new SequenceConsoleCommands());
+        interpreters.add(new PeformanceConsoleCommands());
         interpreters.add(new BaseConsoleCommands());
 
         try {
