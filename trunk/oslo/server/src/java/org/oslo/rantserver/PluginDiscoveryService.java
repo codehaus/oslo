@@ -1,4 +1,4 @@
-package org.oslo.server;
+package org.oslo.rantserver;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;

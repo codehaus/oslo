@@ -5,7 +5,7 @@
  * Time: 7:38:34 PM
  * To change this template use Options | File Templates.
  */
-package org.oslo.server;
+package org.oslo.rantserver;
 
 import org.oslo.common.datamodel.metric.Metric;
 import org.oslo.common.plugin.Plugin;

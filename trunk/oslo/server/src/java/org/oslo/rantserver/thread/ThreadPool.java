@@ -1,4 +1,4 @@
-package org.oslo.server.thread;
+package org.oslo.rantserver.thread;
 
 import java.util.List;
 import java.util.LinkedList;

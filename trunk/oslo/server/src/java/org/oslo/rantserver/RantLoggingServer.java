@@ -1,7 +1,7 @@
-package org.oslo.server;
+package org.oslo.rantserver;
 
-import org.oslo.server.thread.WorkerThread;
-import org.oslo.server.thread.ThreadPool;
+import org.oslo.rantserver.thread.WorkerThread;
+import org.oslo.rantserver.thread.ThreadPool;
 
 import java.nio.channels.*;
 import java.nio.ByteBuffer;

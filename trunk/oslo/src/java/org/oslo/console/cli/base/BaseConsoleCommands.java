@@ -1,8 +1,8 @@
 package org.oslo.console.cli.base;
 
 import org.oslo.common.cli.CommandLineInterpreter;
-import org.oslo.server.prevayler.persistance.PrevaylerPersister;
-import org.oslo.server.prevayler.system.RantSystem;
+import org.oslo.rantserver.prevayler.persistance.PrevaylerPersister;
+import org.oslo.rantserver.prevayler.system.RantSystem;
 import org.prevayler.Prevayler;
 import org.oslo.common.datamodel.process.Process;
 import org.oslo.common.datamodel.group.MetricGroup;
