@@ -10,9 +10,6 @@ import org.oslo.server.prevayler.datamodel.process.Process;
 import org.oslo.server.prevayler.datamodel.group.MetricGroup;
 import org.oslo.server.prevayler.transaction.process.ProcessCreateTransaction;
 import org.oslo.server.prevayler.transaction.process.ProcessUpdateTransaction;
-import org.oslo.server.prevayler.transaction.metric.MetricCreateTransaction;
-import org.oslo.server.prevayler.transaction.group.MetricGroupCreateTransaction;
-import org.oslo.server.prevayler.transaction.group.MetricGroupUpdateTransaction;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
