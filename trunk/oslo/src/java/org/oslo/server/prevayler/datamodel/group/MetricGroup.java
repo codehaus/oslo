@@ -3,6 +3,7 @@ package org.oslo.server.prevayler.datamodel.group;
 import org.oslo.server.prevayler.datamodel.metric.Metric;
 
 import java.util.HashMap;
+import java.io.Serializable;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,7 +12,7 @@ import java.util.HashMap;
  * Time: 8:28:15 PM
  * To change this template use Options | File Templates.
  */
-public class MetricGroup {
+public class MetricGroup implements Serializable {
     // Include what class type metric this is
     String pluginName;
     HashMap metrics = new HashMap();
@@ -26,7 +27,7 @@ public class MetricGroup {
     }
 
     public void addMetric (Metric metric) {
-        metrics.put(metric.getKey(), metric);
+        metrics.put(new Integer(metrics.size() + 1), metric);
     }
 
     public String getDescription() {

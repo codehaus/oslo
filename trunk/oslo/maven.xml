@@ -27,7 +27,7 @@
         <echo>${aspectwerkz.classpath}</echo>
         <echo>${maven.build.dir}/classes</echo>
         <echo>aspectwerkz.home=${env.ASPECTWERKZ_HOME}</echo>
-
+        
         <!--    <compileClassMetaData
                 definitionFile="${maven.src.dir}/aspectwerkz/oslo.xml"
                 repository="${maven.build.dir}/classes"
@@ -100,6 +100,17 @@
         <echo>${message}</echo>
     </goal>
 
+    <goal name="oslo:execute:console"> <!--prereqs="oslo:aspectwerkz:preprocess">-->
+        <!-- ClassPath for the sample file -->
+        <path id="execute.path">
+            <path refid="maven.dependency.classpath"/>
+            <pathelement path="${maven.build.dir}/classes"/>
+        </path>
+
+        <!-- Execute the sample class with or without the aspects -->
+        <java classname="org.oslo.console.cli.CommandLine" fork="false" classpathref="execute.path" />
+    </goal>
+
     <goal name="oslo:start:server" prereqs="oslo:cleanup, oslo:aspectwerkz:preprocess">
         <!-- ClassPath for the sample file -->
         <path id="execute.path">
@@ -121,7 +132,7 @@
         <delete file="java.output"/>
         <delete file="server.java.output"/>
         <delete>
-            <fileset dir="database" includes="*"/>
+            <fileset dir="./database" includes="**/*"/>
         </delete>
     </goal>
 

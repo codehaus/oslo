@@ -114,6 +114,7 @@ public class MetricProcesser {
 
         if (processPlugin != null) {
             metric = processPlugin.parseMetricString(metricString);
+            metric.setPluginName(processPlugin.getClass().getName());
             System.out.println("Received Metric with String: " + processPlugin.createMetricString(metric));
         }
 

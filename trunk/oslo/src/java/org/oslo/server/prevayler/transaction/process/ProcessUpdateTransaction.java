@@ -1,20 +1,20 @@
 package org.oslo.server.prevayler.transaction.process;
 
-import org.prevayler.util.TransactionWithQuery;
 import org.oslo.server.prevayler.system.RantSystem;
 import org.oslo.server.prevayler.datamodel.process.Process;
+import org.prevayler.util.TransactionWithQuery;
 
 /**
  * Created by IntelliJ IDEA.
  * User: christian
- * Date: Jun 8, 2003
- * Time: 8:53:49 PM
+ * Date: Jun 18, 2003
+ * Time: 6:05:21 PM
  * To change this template use Options | File Templates.
  */
-public class ProcessCreateTransaction extends TransactionWithQuery {
+public class ProcessUpdateTransaction extends TransactionWithQuery {
     private Process _process;
 
-    public ProcessCreateTransaction(Process process) {
+    public ProcessUpdateTransaction(Process process) {
         this._process = process;
     }
 
@@ -22,13 +22,12 @@ public class ProcessCreateTransaction extends TransactionWithQuery {
         // Get system
         RantSystem rantSystem = (RantSystem) system;
 
-        //System.out.println("Creating process with processid = " + _process.getProcessID());
+        System.out.println("Updating process with processid = " + _process.getProcessID());
 
-        if (!rantSystem.checkCreateProcess(_process))
-            throw new IllegalArgumentException("Illegal process ID");
+        if (!rantSystem.checkUpdateProcess(_process))
+            throw new IllegalArgumentException("Process does not exist");
 
-        //Process process = new Process(_process);
-        rantSystem.addProcess(_process);
+        rantSystem.updateProcess(_process);
         return _process;
     }
 }

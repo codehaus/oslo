@@ -23,7 +23,7 @@ public class PrevaylerPersister {
             // Create the snapshot, or connect to the existing one
             snapshotPrevayler = new SnapshotPrevayler(new RantSystem(), "./database/prevaylerBase");
             // Ensures that the clocked system works correctly, introducing a clock keeper.
-            ClockActor clockActor = new ClockActor(snapshotPrevayler);
+            //ClockActor clockActor = new ClockActor(snapshotPrevayler);
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use Options | File Templates.
         } catch (ClassNotFoundException e) {
@@ -36,6 +36,10 @@ public class PrevaylerPersister {
             prevaylerPersister = new PrevaylerPersister();
         }
         return prevaylerPersister;
+    }
+
+    public void save() throws Exception {
+        snapshotPrevayler.takeSnapshot();
     }
 
     public Prevayler getPrevayler() {

@@ -1,5 +1,7 @@
 package org.oslo.server.prevayler.datamodel.metric;
 
+import java.io.Serializable;
+
 /**
  * Created by IntelliJ IDEA.
  * User: christian
@@ -7,7 +9,7 @@ package org.oslo.server.prevayler.datamodel.metric;
  * Time: 11:24:15 PM
  * To change this template use Options | File Templates.
  */
-public class Metric {
+public class Metric implements Serializable {
     private String pluginName;
     private String processId;
     private String key;
