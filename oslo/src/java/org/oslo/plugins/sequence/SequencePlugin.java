@@ -38,13 +38,11 @@ public class SequencePlugin implements Plugin {
         StringTokenizer tokenizer = new StringTokenizer(dataString, " ");
 
         // Ok get all the data we need, we know how many elements there are
-        String fromMethodName = tokenizer.nextToken();
-        String fromClassName = tokenizer.nextToken();
-        String toMethodName = tokenizer.nextToken();
-        String toClassName = tokenizer.nextToken();
+        String targetClass = tokenizer.nextToken();
+        String targetMethodName = tokenizer.nextToken();
 
         // Ok we need to construct a Metric object
-        SequenceMetric sequenceMetric =  new SequenceMetric(fromMethodName, fromClassName, toMethodName, toClassName);
+        SequenceMetric sequenceMetric =  new SequenceMetric(targetClass, targetMethodName);
         // Add the process Id number so that we can have a link between all objects for a session
         sequenceMetric.setProcessId(processId);
         return sequenceMetric;
@@ -65,7 +63,7 @@ public class SequencePlugin implements Plugin {
 
     public String createMetricString(Metric metric) throws Exception {
         SequenceMetric sequenceMetric = (SequenceMetric)metric;
-        return sequenceMetric.getProcessId() + " [Sequence] " + sequenceMetric.getFromMethodName() + " " + sequenceMetric.getFromClassName() + " " + sequenceMetric.getToMethodClass() + " " + sequenceMetric.getToMethodClass() + "[/Sequence]";
+        return sequenceMetric.getProcessId() + " [Sequence] " + sequenceMetric.getTargetClass() + " " + sequenceMetric.getTargetMethodName() + "[/Sequence]";
     }
 
     public String getProcessId() {

@@ -25,7 +25,7 @@ public class MetricLoggerTest extends TestCase {
         metricLogger.registerPlugin(sequencePlugin);
 
         // Ok generate a fake Metric for the Sequence Plugin
-        SequenceMetric sequenceMetric = new SequenceMetric("fromMethodName", "fromClassName", "toMethodName", "toMethodClass");
+        SequenceMetric sequenceMetric = new SequenceMetric("targetClass", "targetMethodName");
         sequenceMetric.setPluginName(sequencePlugin.getClass().getName());
 
         metricLogger.logMetric(sequenceMetric);
