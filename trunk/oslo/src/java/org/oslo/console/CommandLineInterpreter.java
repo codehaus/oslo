@@ -1,4 +1,4 @@
-package org.oslo.console.cli;
+package org.oslo.console;
 
 /**
  * Created by IntelliJ IDEA.
