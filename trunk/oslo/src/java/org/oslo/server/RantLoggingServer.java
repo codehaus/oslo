@@ -8,6 +8,8 @@ import java.nio.ByteBuffer;
 import java.net.ServerSocket;
 import java.net.InetSocketAddress;
 import java.util.Iterator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,6 +26,7 @@ public class RantLoggingServer {
     // Use the same byte buffer for all channels. A single thread is
     // servicing all the channels, so no danger of concurrent acccess.
     private ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
+    private static Log log = LogFactory.getLog(RantLoggingServer.class);
 
     public RantLoggingServer() {
     }
@@ -36,7 +39,6 @@ public class RantLoggingServer {
         // Get the socket the server listens on, if one is provided
         String socket = System.getProperty("server.socket");
 
-        int socketPort = 0;
         try {
             socketPort = Integer.parseInt(socket);
         } catch (NumberFormatException e) {
@@ -44,7 +46,7 @@ public class RantLoggingServer {
             //e.printStackTrace();  //To change body of catch statement use Options | File Templates.
         }
 
-        System.out.println("Listening on port: " + socketPort);
+        log.info("Listening on port: " + socketPort);
 
         //Allocate an unbound server socket channel
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();

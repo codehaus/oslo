@@ -1,6 +1,7 @@
 package org.oslo.plugins.sequence;
 
 import org.oslo.server.plugin.Plugin;
+import org.oslo.server.plugin.PluginImpl;
 import org.oslo.server.prevayler.datamodel.metric.Metric;
 import org.oslo.server.prevayler.persistance.PrevaylerPersister;
 import org.oslo.server.prevayler.system.RantSystem;
@@ -16,14 +17,14 @@ import java.io.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import com.zanthan.sequence.headless.PngCreator;
 import com.zanthan.sequence.swing.display.SwingPainter;
 import com.zanthan.sequence.swing.display.SwingStringMeasure;
-import com.zanthan.sequence.preferences.Prefs;
 import com.zanthan.sequence.layout.LayoutData;
 import com.zanthan.sequence.diagram.Diagram;
 import com.zanthan.sequence.diagram.NodeFactoryImpl;
 import com.zanthan.sequence.parser.SimpleParserImpl;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.imageio.ImageIO;
 
@@ -34,9 +35,10 @@ import javax.imageio.ImageIO;
  * Time: 11:25:25 PM
  * To change this template use Options | File Templates.
  */
-public class SequencePlugin implements Plugin, CommandLineInterpreter {
+public class SequencePlugin extends PluginImpl implements Plugin, CommandLineInterpreter {
     private static final String IDENTIFIER = "Sequence";
     private String processId;
+    private static Log log = LogFactory.getLog(SequencePlugin.class);
 
     public String getIdentifier() {
         return IDENTIFIER;
@@ -78,22 +80,13 @@ public class SequencePlugin implements Plugin, CommandLineInterpreter {
         return sequenceMetric;
     }
 
-    public String getProcessId(String metricString) {
-        int processIdPosition = metricString.indexOf(" ");
-        return metricString.substring(0, processIdPosition);
-    }
-
-    public String getDataString(String metricString) {
-        // Ok remove the tags from the front and back from the data
-        int sequenceStartPosition = metricString.indexOf("[" + IDENTIFIER + "]");
-        int sequenceEndPosition = metricString.indexOf("[/" + IDENTIFIER + "]");
-
-        return metricString.substring(sequenceStartPosition + IDENTIFIER.length() + 2 + 1, sequenceEndPosition);
-    }
-
     public String createMetricString(Metric metric) throws Exception {
         SequenceMetric sequenceMetric = (SequenceMetric) metric;
-        String sequenceString = sequenceMetric.getProcessId() + " [Sequence] " + sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod() + " " + sequenceMetric.getCalleeClass() + " " + sequenceMetric.getCalleeMethod() + " " + sequenceMetric.getReturnType();
+        String sequenceString = sequenceMetric.getProcessId() + " [Sequence] " + sequenceMetric.getCallerClass() + " "
+                + sequenceMetric.getCallerMethod() + " "
+                + sequenceMetric.getCalleeClass() + " "
+                + sequenceMetric.getCalleeMethod() + " "
+                + sequenceMetric.getReturnType();
 
         ArrayList parameters = sequenceMetric.getParameters();
         Iterator paramIt = parameters.iterator();
@@ -104,7 +97,7 @@ public class SequencePlugin implements Plugin, CommandLineInterpreter {
         }
 
         sequenceString += "[/Sequence]";
-        System.out.println(sequenceString);
+        log.debug("Created sequenceString: " + sequenceString);
 
         return sequenceString;
     }
@@ -396,7 +389,4 @@ public class SequencePlugin implements Plugin, CommandLineInterpreter {
         layoutData.paint(painter);
         ImageIO.write(png, "png", new File(outputFile));
     }
-
-    private String inFileName = "./sequence.txt";
-    private String outFileName = "./sequence.png";
 }
