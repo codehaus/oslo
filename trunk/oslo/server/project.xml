@@ -9,6 +9,13 @@
 
         <!-- jar files the project is dependent on -->
     <dependencies>
+        <!-- Oslo dependencies -->
+        <dependency>
+            <groupId>oslo</groupId>
+            <artifactId>oslo-common</artifactId>
+            <version>0.1</version>
+        </dependency>
+
         <!-- Prevayler -->
         <dependency>
             <id>prevayler</id>
@@ -21,17 +28,10 @@
             <version>1.0</version>
         </dependency>
 
-        <!-- Oslo dependencies -->
+        <!-- Other dependencies -->
         <dependency>
-            <groupId>oslo</groupId>
-            <artifactId>oslo-common</artifactId>
-            <version>0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>oslo</groupId>
-            <artifactId>oslo-plugins</artifactId>
-            <version>0.1</version>
+            <id>commons-logging</id>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
@@ -49,14 +49,5 @@
                 <exclude>**/NaughtyTest.java</exclude>
             </excludes>
         </unitTest>
-
-        <resources>
-            <resource>
-                <directory>src/conf</directory>
-                <includes>
-                    <include>*.properties</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
 </project>
