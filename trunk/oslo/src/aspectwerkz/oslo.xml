@@ -1,20 +1,19 @@
 <?xml version="1.0"?>
 <aspectwerkz>
-    <advice name="performance"
+    <advice-def name="performance"
         advice="org.oslo.client.aspects.performance.MethodPerformanceAdvice"
         deployment-model="perJVM"/>
 
-    <advice name="callersidesequence"
+    <advice-def name="callersidesequence"
         advice="org.oslo.client.aspects.sequence.SequenceCallerSideAdvice"
         deployment-model="perJVM"/>
 
-    <!--<aspect class="org.oslo.sample.*">
-        <pointcut type="method" pattern="* do*(..)">
-            <advice-ref name="logging"/>
-        </pointcut>
-    </aspect>-->
-
-    <aspect class="org.oslo.sampleapp.*">
+    <aspect name="methodAspect">
+        <pointcut-def name="allMethods" type="method" pattern="* *.*(..)">
+            <advice-ref name="performance"/>
+        </pointcut-def>
+    </aspect>
+<!--    <aspect class="org.oslo.sampleapp.*">
         <pointcut type="callerSide" pattern="*#* d*(..)">
             <advice-ref name="callersidesequence"/>
         </pointcut>
@@ -22,5 +21,5 @@
         <pointcut type="method" pattern="* *(..)">
             <advice-ref name="performance"/>
         </pointcut>
-    </aspect>
+    </aspect>-->
 </aspectwerkz>

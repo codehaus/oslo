@@ -6,6 +6,8 @@ import org.oslo.common.prevayler.system.RantSystem;
 import org.prevayler.Prevayler;
 import org.oslo.common.datamodel.process.Process;
 import org.oslo.common.datamodel.group.MetricGroup;
+import org.oslo.common.datamodel.metric.Metric;
+import org.oslo.common.plugin.Plugin;
 
 import java.util.StringTokenizer;
 import java.util.Iterator;
@@ -20,18 +22,20 @@ import java.util.Iterator;
 public class BaseConsoleCommands implements CommandLineInterpreter {
 
     public String[] getCommands() {
-        String commands[] = new String[3];
+        String commands[] = new String[4];
         commands[0] = "LISTPROCESSES";
         commands[1] = "LISTPROCESS";
-        commands[2] = "QUIT";
+        commands[2] = "LISTMETRICS";
+        commands[3] = "QUIT";
         return commands;
     }
 
     public String[] getCommandHelp() {
-        String helpStrings[] = new String[3];
+        String helpStrings[] = new String[4];
         helpStrings[0] = "LISTPROCESSES \n\t Lists all available process recorded";
         helpStrings[1] = "LISTPROCESS <processID> \n\t Lists all metrics attached to this process ID";
-        helpStrings[2] = "QUIT \n\t Quits the application";
+        helpStrings[2] = "LISTMETRICS <processID> <metricGroup> \n\t List all metrics attached to this process ID";
+        helpStrings[3] = "QUIT \n\t Quits the application";
         return helpStrings;
     }
 
@@ -45,12 +49,49 @@ public class BaseConsoleCommands implements CommandLineInterpreter {
             return executeListProcesses(tokenizer);
         } else if ("LISTPROCESS".equals(commandToken.toUpperCase())) {
             return executeListProcess(tokenizer);
+        } else if ("LISTMETRICS".equals(commandToken.toUpperCase())) {
+            return executeListMetrics(tokenizer);
         } else {
             return null;
         }
     }
 
-    private String executeListProcess(StringTokenizer tokenizer) {
+    private String executeListMetrics(StringTokenizer tokenizer) throws Exception {
+        String processId = tokenizer.nextToken();
+        String metricGroupId = tokenizer.nextToken();
+
+        PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
+        Prevayler prevayler = prevaylerPersister.getPrevayler();
+        RantSystem rantSystem = (RantSystem) prevayler.prevalentSystem();
+
+        // Get the process
+        Process process = rantSystem.getProcess(processId);
+
+        if(process == null)
+            return "Could not find the process with processId = " + processId;
+
+        MetricGroup metricGroup = process.getMetricGroup(metricGroupId);
+
+        if(metricGroup == null)
+            return "Could not find the metric group specified metricgroup = " + metricGroupId;
+
+        // Create an instance of the plugin
+        Plugin metricPlugin = (Plugin)Class.forName(metricGroupId).newInstance();
+
+        // Get all metrics and present them
+        Iterator iterator = metricGroup.getMetrics().values().iterator();
+        StringBuffer metricString = new StringBuffer();
+
+        while (iterator.hasNext()) {
+            Metric metric = (Metric) iterator.next();
+            metricString.append("\n\t");
+            metricString.append(metricPlugin.createMetricString(metric));
+        }
+
+        return metricString.toString();  //To change body of created methods use Options | File Templates.
+    }
+
+    private String executeListProcess(StringTokenizer tokenizer) throws Exception {
         String processId = tokenizer.nextToken();
 
         PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
@@ -60,7 +101,7 @@ public class BaseConsoleCommands implements CommandLineInterpreter {
         // Get all the available processes
         Process process = rantSystem.getProcess(processId);
 
-        // Check if the process is there
+        // Get the process
         if(process == null)
             return "Could not find the process with processId = " + processId;
 
@@ -76,7 +117,7 @@ public class BaseConsoleCommands implements CommandLineInterpreter {
         return metricString;
     }
 
-    private String executeListProcesses(StringTokenizer tokenizer) {
+    private String executeListProcesses(StringTokenizer tokenizer) throws Exception {
         PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
         Prevayler prevayler = prevaylerPersister.getPrevayler();
         RantSystem rantSystem = (RantSystem) prevayler.prevalentSystem();
