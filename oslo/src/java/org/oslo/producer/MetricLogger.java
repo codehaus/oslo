@@ -7,8 +7,8 @@
  */
 package org.oslo.producer;
 
-import org.oslo.server.prevayler.datamodel.metric.Metric;
-import org.oslo.server.plugin.Plugin;
+import org.oslo.common.datamodel.metric.Metric;
+import org.oslo.common.plugin.Plugin;
 
 import java.io.*;
 import java.net.Socket;
