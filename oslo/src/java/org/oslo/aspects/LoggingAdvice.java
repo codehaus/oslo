@@ -1,6 +1,6 @@
 package org.oslo.aspects;
 
-import org.oslo.producer.DataProducer;
+import org.oslo.producer.MetricLogger;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodJoinPoint;
 import org.codehaus.aspectwerkz.advice.AroundAdvice;
@@ -20,12 +20,12 @@ public class LoggingAdvice extends AroundAdvice {
   public Object execute(JoinPoint joinPoint) throws Throwable {
     MethodJoinPoint jp = (MethodJoinPoint)joinPoint;
 
-    DataProducer dataProducer = DataProducer.getInstance();
-    dataProducer.logJointPointEntry(jp);
+    MetricLogger dataProducer = MetricLogger.getInstance();
+    //dataProducer.logJointPointEntry(jp);
 
     final Object result = joinPoint.proceed();
 
-    dataProducer.logJointPointExit(jp);
+    //dataProducer.logJointPointExit(jp);
     return result;
   }
 }

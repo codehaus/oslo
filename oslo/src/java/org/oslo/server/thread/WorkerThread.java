@@ -97,7 +97,7 @@ public class WorkerThread extends Thread {
      * re-enables OP_READ and calls wakeup( ) on the selector
      * so the selector will resume watching this channel.
      */
-    public void drainChannel(SelectionKey key) throws Exception {
+    public synchronized void drainChannel(SelectionKey key) throws Exception {
         StringBuffer stringBuffer = new StringBuffer();
         SocketChannel channel = (SocketChannel) key.channel();
         int count;
@@ -133,6 +133,7 @@ public class WorkerThread extends Thread {
             buffer.clear(); // Empty buffer
         }
 
+        System.out.println("Metric: " + byteArrayOutputStream.toString());
         fileOutputStream.write(byteArrayOutputStream.toByteArray());
         fileOutputStream.close();
 
@@ -140,7 +141,7 @@ public class WorkerThread extends Thread {
 
         if (bytes.length > 0) {
             // Ok get the prevayler object, save the data to it..
-            PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
+/*            PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
             Prevayler prevayler = prevaylerPersister.getPrevayler();
 
             RantSystem rantSystem = (RantSystem) prevayler.prevalentSystem();
@@ -151,7 +152,7 @@ public class WorkerThread extends Thread {
                 System.out.println("classname = " + performanceMetric.getClassName());
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use Options | File Templates.
-            }
+            }  */
         }
 
         if (count < 0) {

@@ -73,7 +73,11 @@ public class RantLoggingServer {
 
                     registerChannel(selector, channel, SelectionKey.OP_READ);
 
-                    sayHello(channel);
+                    // Ok send a registration number (defined by the system clock) that
+                    // The advices can use to ensure that we can track a specific applications
+                    // metrics
+                    sendInstanceKey(channel);
+                    //sayHello(channel);
                 }
 
                 // Is there data to read on this channel?
@@ -85,6 +89,16 @@ public class RantLoggingServer {
                 it.remove();
             }
         }
+    }
+
+    private void sendInstanceKey(SocketChannel channel) throws Exception {
+        String idNumber = Long.toString(System.currentTimeMillis());
+        System.out.println("Server ID: " + idNumber);
+
+        buffer.clear();
+        buffer.put(idNumber.getBytes());
+        buffer.flip();
+        channel.write(buffer);
     }
 
     /**
@@ -105,12 +119,12 @@ public class RantLoggingServer {
      * Spew a greeting to the incoming client connection.
      * @param channel The newly connected SocketChannel to say hello to.
      */
-    private void sayHello(SocketChannel channel) throws Exception {
+    /*private void sayHello(SocketChannel channel) throws Exception {
         buffer.clear();
         buffer.put("Hi there!\r\n".getBytes());
         buffer.flip();
         channel.write(buffer);
-    }
+    } */
 
     protected void readDataFromSocket(SelectionKey key) throws Exception {
         WorkerThread worker = pool.getWorker();
@@ -126,8 +140,5 @@ public class RantLoggingServer {
         // Invoking this wakes up the worker thread, then returns
         worker.serviceChannel(key);
     }
-
-
-
 }
 

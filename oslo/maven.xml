@@ -99,7 +99,7 @@
             <pathelement path="${maven.build.dir}/classes"/>
         </path>
 
-        <java classname="org.oslo.server.RantLoggingServer" fork="true" classpathref="execute.path" output="java.output"/>
+        <java classname="org.oslo.server.RantLoggingServer" fork="true" classpathref="execute.path" output="server.java.output"/>
 
         <!-- Load the output and display it -->
         <loadfile property="message" srcFile="java.output"/>
