@@ -12,6 +12,7 @@ import java.io.Serializable;
  * Date: Jun 8, 2003
  * Time: 8:27:40 PM
  * To change this template use Options | File Templates.
+ *
  */
 public class Process implements Serializable {
     private String processID;
@@ -19,6 +20,16 @@ public class Process implements Serializable {
 
     public Process(String processID) {
         this.processID = processID;
+    }
+
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public MetricGroup addMetricGroup(MetricGroup metricGroup) {

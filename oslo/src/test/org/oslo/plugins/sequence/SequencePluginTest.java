@@ -9,7 +9,6 @@ import org.oslo.server.prevayler.datamodel.process.Process;
 import org.oslo.server.prevayler.datamodel.group.MetricGroup;
 import org.oslo.server.prevayler.transaction.process.ProcessCreateTransaction;
 import org.oslo.server.prevayler.transaction.process.ProcessRemoveTransaction;
-import org.oslo.server.prevayler.transaction.group.MetricGroupCreateTransaction;
 
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -79,7 +78,7 @@ public class SequencePluginTest extends TestCase {
 
     public void testParseMetricString() throws Exception {
         SequencePlugin sequencePlugin = new SequencePlugin();
-        SequenceMetric sequenceMetric = (SequenceMetric) sequencePlugin.parseMetricString("1234567 [Sequence] toClass toMethod fromClass fromMethod [/Sequence]");
+        SequenceMetric sequenceMetric = (SequenceMetric) sequencePlugin.parseMetricString("1234567 [Sequence] toClass toMethod fromClass fromMethod void[/Sequence]");
 
         assertNotNull(sequenceMetric);
 
@@ -89,6 +88,7 @@ public class SequencePluginTest extends TestCase {
         assertEquals("fromClass", sequenceMetric.getCalleeClass());
         assertEquals("fromMethod", sequenceMetric.getCalleeMethod());
         assertEquals("1234567", sequenceMetric.getProcessId());
+        assertEquals("void", sequenceMetric.getReturnType());
     }
 
     public void testGetIdentifier() throws Exception {
@@ -98,7 +98,7 @@ public class SequencePluginTest extends TestCase {
 
     public void testGetIdNumber() throws Exception {
         SequencePlugin sequencePlugin = new SequencePlugin();
-        SequenceMetric sequenceMetric = (SequenceMetric) sequencePlugin.parseMetricString("1234567 [Sequence] fromMethod fromClass toMethod toClass [/Sequence]");
+        SequenceMetric sequenceMetric = (SequenceMetric) sequencePlugin.parseMetricString("1234567 [Sequence] fromMethod fromClass toMethod toClass void[/Sequence]");
         assertNotNull(sequenceMetric);
 
         // Get sequence String
@@ -131,6 +131,9 @@ public class SequencePluginTest extends TestCase {
         sequenceDiagram = sequencePlugin.executeGenerateSequenceDiagram(tokenizer);
 
         assertNotNull(sequenceDiagram);
-        assertEquals("(org.MainClass main\n\t(org.Level1 level1\n\t\t(org.Level2 level2))\n\t(org.MainClass level0)\n)", sequenceDiagram);
+
+
+
+        assertEquals("(org.MainClass main\n\t(org.Level1 level1<> \"void\" \n\t\t(org.Level2 level2<> \"void\" ))\n\t(org.MainClass level0<> \"void\" )\n)", sequenceDiagram);
     }
 }

@@ -1,6 +1,6 @@
 package org.oslo.console.cli.base;
 
-import org.oslo.console.cli.CommandLineInterpreter;
+import org.oslo.console.CommandLineInterpreter;
 import org.oslo.server.prevayler.persistance.PrevaylerPersister;
 import org.oslo.server.prevayler.system.RantSystem;
 import org.prevayler.Prevayler;

@@ -82,28 +82,6 @@ public class RantSystem implements ClockedSystem {
         }
     }
 
-    public boolean checkCreateMetricGroup(String pluginName) {
-        if(!metricgroups.containsKey(pluginName))
-            return true;
-        else
-            return false;
-    }
-
-    public boolean checkUpdateMetricGroup(MetricGroup metricGroup) throws Exception {
-        if(metricgroups.containsKey(metricGroup.getPluginName())) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean checkCreateMetric(String transactionID) {
-        if(!metrics.containsKey(transactionID))
-            return true;
-        else
-            return false;
-    }
-
     public void removeProcess(Process process) {
         if(processes.containsKey(process.getProcessID()))
             processes.remove(process.getProcessID());

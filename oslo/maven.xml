@@ -1,4 +1,4 @@
-<project xmlns:m="maven" xmlns:jxr="jxr" xmlns:j="jelly:core" xmlns:u="jelly:util">
+<project xmlns:m="maven" xmlns:jxr="jxr" xmlns:j="jelly:core" xmlns:u="jelly:util" xmlns:ant="jelly:ant">
     <property name="aspectwerkz.classpath" refid="maven.dependency.classpath"/>
 
     <property environment="env"/>
@@ -10,14 +10,36 @@
         <taskdef name="compileClassMetaData"
             classname="aspectwerkz.definition.metadata.task.ClassFileMetaDataCompilerTask"
             classpath="${aspectwerkz.classpath}"/>-->
+    <echo>${aspectwerkz.classpath}</echo>
 
-    <taskdef name="offlineTransformation"
+    <ant:taskdef name="offlineTransformation"
         classname="org.codehaus.aspectwerkz.task.OfflineTransformationTask"
         classpath="${aspectwerkz.classpath}"/>
 
+    <!--    <ant:taskdef name="schemaexport"
+            classname="net.sf.hibernate.tool.hbm2ddl.SchemaExportTask"
+            classpath="${aspectwerkz.classpath}"/>-->
     <!--<taskdef name="compileWeaveModelFromClasses"
         classname="org.codehaus.aspectwerkz.task.ClassFileMetaDataCompilerTask"
         classpath="${aspectwerkz.classpath}"/>-->
+
+    <!--<goal name="createdatabase" prereqs="xdoclet:hibernatedoclet">
+        <ant:taskdef name="schemaexport"
+            classname="net.sf.hibernate.tool.hbm2ddl.SchemaExportTask"
+            classpath="${aspectwerkz.classpath}:${maven.build.dir}/classes"/>
+            -->
+        <!-- Export the schema to the database -->
+<!--        <schemaexport
+            properties="${maven.src.dir}/config/hibernate.properties"
+            quiet="no"
+            text="no"
+            delimiter=";"
+            output="${maven.build.dir}/schema/${maven.final.name}-schema.sql">
+            <fileset dir="${maven.build.dir}/classes">
+                <include name="**/*.hbm.xml"/>
+            </fileset>
+        </schemaexport>
+    </goal>-->
 
     <!-- =================================================== -->
     <!--  Compile the classes with AspectWerkz               -->
@@ -27,7 +49,7 @@
         <echo>${aspectwerkz.classpath}</echo>
         <echo>${maven.build.dir}/classes</echo>
         <echo>aspectwerkz.home=${env.ASPECTWERKZ_HOME}</echo>
-        
+
         <!--    <compileClassMetaData
                 definitionFile="${maven.src.dir}/aspectwerkz/oslo.xml"
                 repository="${maven.build.dir}/classes"

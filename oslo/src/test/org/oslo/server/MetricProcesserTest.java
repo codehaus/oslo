@@ -19,7 +19,7 @@ public class MetricProcesserTest extends TestCase {
         assertNotNull(metricProcesser);
 
         //SequenceMetric sequenceMetric = new SequenceMetric("fromMethodName", "fromClassName", "toMethodName", "toMethodClass");
-        Metric metric = metricProcesser.processMetric("1234567 [Sequence] fromMethod fromClass toMethod toClass [/Sequence]");
+        Metric metric = metricProcesser.processMetric("1234567 [Sequence] fromMethod fromClass toMethod toClass void [/Sequence]");
         assertNotNull(metric);
 
         assertTrue(metric instanceof SequenceMetric);
