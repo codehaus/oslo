@@ -1,9 +1,9 @@
 package org.oslo.aspects;
 
-import aspectwerkz.advice.MethodAdvice;
-import aspectwerkz.joinpoint.JoinPoint;
-import aspectwerkz.joinpoint.MethodJoinPoint;
 import org.oslo.producer.DataProducer;
+import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
+import org.codehaus.aspectwerkz.joinpoint.MethodJoinPoint;
+import org.codehaus.aspectwerkz.advice.AroundAdvice;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,7 +12,7 @@ import org.oslo.producer.DataProducer;
  * Time: 13:49:24
  * To change this template use Options | File Templates.
  */
-public class LoggingAdvice extends MethodAdvice {
+public class LoggingAdvice extends AroundAdvice {
   public LoggingAdvice() {
     super();
   }
