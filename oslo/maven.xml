@@ -128,7 +128,7 @@
         </path>
 
         <!-- Execute the sample class with or without the aspects -->
-        <java classname="org.oslo.sample.SampleMain" fork="true" classpathref="execute.path" output="java.output">
+        <java classname="org.oslo.sampleapp.SampleMain" fork="true" classpathref="execute.path" output="java.output">
             <jvmarg value="-Daspectwerkz.definition.file=${maven.src.dir}/aspectwerkz/oslo.xml"/>
             <jvmarg value="-Daspectwerkz.home=${basedir}"/>
             <jvmarg value="-Daspectwerkz.metadata.dir=${maven.build.dir}/_metaData"/>
@@ -156,7 +156,7 @@
         <echo>${cp}</echo> -->
 
         <!-- Execute the sample class with or without the aspects -->
-        <!--<java classname="org.oslo.console.cli.CommandLine" fork="true" classpathref="execute.path" />-->
+        <!--<java classname="org.oslo.cli.CommandLine" fork="true" classpathref="execute.path" />-->
     </goal>
 
     <goal name="oslo:start:server" prereqs="oslo:cleanup, oslo:aspectwerkz:preprocess">

@@ -11,7 +11,7 @@ import org.codehaus.aspectwerkz.advice.AroundAdvice;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.MethodJoinPoint;
 import org.oslo.plugins.performanceplugin.metric.PerformanceMetric;
-import org.oslo.producer.MetricLogger;
+import org.oslo.client.producer.MetricLogger;
 import org.oslo.plugins.performanceplugin.plugin.PerformancePlugin;
 
 import java.net.InetAddress;

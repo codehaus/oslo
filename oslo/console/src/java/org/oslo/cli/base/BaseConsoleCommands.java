@@ -1,4 +1,4 @@
-package org.oslo.console.cli.base;
+package org.oslo.cli.base;
 
 import org.oslo.common.cli.CommandLineInterpreter;
 import org.oslo.rantserver.prevayler.persistance.PrevaylerPersister;
