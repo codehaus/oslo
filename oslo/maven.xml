@@ -38,15 +38,19 @@
         <java classname="org.cs3.jmangler.offline.starter.Main" classpathref="maven.dependency.classpath" fork="true" append="true" output="java.output">
             <jvmarg value="-Daspectwerkz.definition.file=${maven.src.dir}/aspectwerkz/oslo.xml"/>
             <jvmarg value="-Daspectwerkz.src.dir="/>
-            <jvmarg value="-Daspectwerkz.home=${env.ASPECTWERKZ_HOME}"/>
+<!--            <jvmarg value="-Daspectwerkz.home=${env.ASPECTWERKZ_HOME}"/> -->
+            <jvmarg value="-Daspectwerkz.home=${maven.src.dir}"/>
             <jvmarg value="-Daspectwerkz.metadata.dir=${maven.build.dir}/_metaData"/>
-            <jvmarg value="-Dorg.cs3.jmangler.initfile=${env.ASPECTWERKZ_HOME}/config/jmangler-order.config"/>
+            <jvmarg value="-Dorg.cs3.jmangler.initfile=${maven.src.dir}/config/jmangler-order.config"/>
+<!--            <jvmarg value="-Dorg.cs3.jmangler.initfile=${env.ASPECTWERKZ_HOME}/config/jmangler-order.config"/>-->
             <arg value="--cp"/>
             <arg value="${maven.build.dir}/classes"/>
             <arg value="--tcp"/>
-            <arg value="${env.ASPECTWERKZ_HOME}/lib/aspectwerkz-0.4.jar"/>
+<!--            <arg value="${env.ASPECTWERKZ_HOME}/lib/aspectwerkz-0.4.jar"/>-->
+            <arg value="${maven.src.dir}/../devlib/aspectwerkz/jars/aspectwerkz-0.4.jar"/>
             <arg value="--cf"/>
-            <arg value="${env.ASPECTWERKZ_HOME}/config/aspectwerkz.conf"/>
+<!--            <arg value="${env.ASPECTWERKZ_HOME}/config/aspectwerkz.conf"/>-->
+            <arg value="${maven.src.dir}/config/aspectwerkz.conf"/>
         </java>
 
         <!-- Load the output and display it -->
