@@ -94,7 +94,7 @@ public class PluginDiscoveryService {
     }
 
     /**
-     * Figures out if the class uses the interface "org.oslo.server.plugin.Plugin" and adds it to the list
+     * Figures out if the class uses the interface "org.oslo.common.plugin.Plugin" and adds it to the list
      * @param elementName
      * @param plugins
      * @return
@@ -116,7 +116,7 @@ public class PluginDiscoveryService {
                 for (int i = 0; i < interfaces.length; i++) {
                     Class anInterface = interfaces[i];
 
-                    if ("org.oslo.server.plugin.Plugin".equals(anInterface.getName())) {
+                    if ("org.oslo.common.plugin.Plugin".equals(anInterface.getName())) {
                         plugins.add(elementClass.getName());
                     }
                 }

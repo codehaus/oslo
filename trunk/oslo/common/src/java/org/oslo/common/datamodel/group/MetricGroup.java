@@ -1,6 +1,6 @@
-package org.oslo.server.prevayler.datamodel.group;
+package org.oslo.common.datamodel.group;
 
-import org.oslo.server.prevayler.datamodel.metric.Metric;
+import org.oslo.common.datamodel.metric.Metric;
 
 import java.util.HashMap;
 import java.io.Serializable;

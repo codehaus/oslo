@@ -1,4 +1,4 @@
-package org.oslo.server.prevayler.datamodel.metric;
+package org.oslo.common.datamodel.metric;
 
 import java.io.Serializable;
 

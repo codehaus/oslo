@@ -1,4 +1,4 @@
-package org.oslo.server.plugin;
+package org.oslo.common.plugin;
 
 /**
  * Created by IntelliJ IDEA.
