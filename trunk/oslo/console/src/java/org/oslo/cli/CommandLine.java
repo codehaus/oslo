@@ -1,11 +1,11 @@
 package org.oslo.cli;
 
+import org.prevayler.Prevayler;
+import org.oslo.common.cli.CommandLineInterpreter;
 import org.oslo.rantserver.prevayler.persistance.PrevaylerPersister;
 import org.oslo.rantserver.prevayler.system.RantSystem;
-import org.prevayler.Prevayler;
-import org.oslo.plugins.sequenceplugin.SequencePlugin;
+import org.oslo.plugins.sequenceplugin.plugin.SequencePlugin;
 import org.oslo.cli.base.BaseConsoleCommands;
-import org.oslo.common.cli.CommandLineInterpreter;
 
 import java.util.*;
 import java.io.*;
