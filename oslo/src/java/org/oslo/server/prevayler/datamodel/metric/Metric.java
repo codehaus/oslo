@@ -1,4 +1,4 @@
-package org.oslo.server.metric;
+package org.oslo.server.prevayler.datamodel.metric;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,6 +10,11 @@ package org.oslo.server.metric;
 public class Metric {
     private String pluginName;
     private String processId;
+    private String key;
+
+    public Metric(String key) {
+        this.key = key;
+    }
 
     public String getPluginName() {
         return pluginName;
@@ -25,5 +30,9 @@ public class Metric {
 
     public void setProcessId(String processId) {
         this.processId = processId;
+    }
+
+    public String getKey() {
+        return key;
     }
 }
