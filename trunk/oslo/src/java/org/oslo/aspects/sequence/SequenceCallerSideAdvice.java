@@ -4,8 +4,8 @@ import org.codehaus.aspectwerkz.advice.PreAdvice;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.CallerSideJoinPoint;
 import org.oslo.producer.MetricLogger;
-import org.oslo.plugins.sequence.SequencePlugin;
-import org.oslo.metrics.sequence.SequenceMetric;
+import org.oslo.plugins.sequenceplugin.plugin.SequencePlugin;
+import org.oslo.plugins.sequenceplugin.metric.SequenceMetric;
 
 import java.util.ArrayList;
 

@@ -106,7 +106,7 @@ public class WorkerThread extends Thread {
         int count;
         buffer.clear(); // Empty buffer
 
-        FileOutputStream fileOutputStream = new FileOutputStream("sequence.txt", true);
+        FileOutputStream fileOutputStream = new FileOutputStream("sequenceplugin.txt", true);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         // Loop while data is available; channel is nonblocking

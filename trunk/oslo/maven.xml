@@ -1,4 +1,11 @@
-<project xmlns:m="maven" xmlns:jxr="jxr" xmlns:j="jelly:core" xmlns:u="jelly:util" xmlns:ant="jelly:ant">
+<project
+    xmlns:m="maven"
+    xmlns:jxr="jxr"
+    xmlns:j="jelly:core"
+    xmlns:u="jelly:util"
+    xmlns:maven="jelly:maven"
+    xmlns:ant="jelly:ant">
+
     <property name="aspectwerkz.classpath" refid="maven.dependency.classpath"/>
 
     <property environment="env"/>
@@ -40,6 +47,16 @@
             </fileset>
         </schemaexport>
     </goal>-->
+
+    <goal name="build-all" description="Build all components using reactor">
+        <maven:reactor
+            basedir="${basedir}"
+            includes="*/project.xml"
+            goals="default"
+            banner="Building"
+            ignoreFailures="false"/>
+    </goal>
+
 
     <!-- =================================================== -->
     <!--  Compile the classes with AspectWerkz               -->
@@ -151,7 +168,7 @@
             <pathelement path="${maven.src.dir}/properties"/>
         </path>
 
-        <java classname="org.oslo.rantserver.RantLoggingServer" fork="true" classpathref="execute.path" output="server.java.output"/>
+        <java classname="org.oslo.server.RantLoggingServer" fork="true" classpathref="execute.path" output="server.java.output"/>
 
         <!-- Load the output and display it -->
         <loadfile property="message" srcFile="java.output"/>

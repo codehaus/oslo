@@ -87,8 +87,8 @@ public class PluginDiscoveryService {
             }
         }  */
         ArrayList plugins = new ArrayList();
-        plugins.add("org.oslo.plugins.performance.PerformancePlugin");
-        plugins.add("org.oslo.plugins.sequence.SequencePlugin");
+        plugins.add("org.oslo.plugins.performanceplugin.plugin.PerformancePlugin");
+        plugins.add("org.oslo.plugins.sequenceplugin.plugin.SequencePlugin");
 
         return plugins;
     }
