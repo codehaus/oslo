@@ -139,7 +139,7 @@ public class PluginDiscoveryService {
      * @return
      * @throws IOException
      */
-    /*public static ArrayList getDirectoryFiles(String root, ArrayList files, File file) throws IOException {
+    public static ArrayList getDirectoryFiles(String root, ArrayList files, File file) throws IOException {
 
         if (file.isDirectory()) {
             // Traverse the directory
@@ -159,5 +159,5 @@ public class PluginDiscoveryService {
         }
 
         return files;
-    } */
+    }
 }
