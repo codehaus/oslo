@@ -90,4 +90,8 @@
         <loadfile property="message" srcFile="java.output"/>
         <echo>${message}</echo>
     </goal>
+
+    <goal name="oslo:execute:sequence-gui">
+        <java classname="com.zanthan.sequence.Main" fork="true" classpathref="maven.dependency.classpath" output="java.output"/>
+    </goal>
 </project>
