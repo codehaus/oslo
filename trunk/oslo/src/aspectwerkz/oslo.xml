@@ -14,7 +14,7 @@
         </pointcut>
     </aspect>-->
 
-    <aspect class="org.oslo.sample.*">
+    <aspect class="org.oslo.sampleapp.*">
         <pointcut type="callerSide" pattern="*#* d*(..)">
             <advice-ref name="callersidesequence"/>
         </pointcut>

@@ -29,12 +29,6 @@
             <version>0.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>oslo</groupId>
-            <artifactId>oslo-server</artifactId>
-            <version>0.1</version>
-        </dependency>
-
         <!-- Other dependencies -->
         <dependency>
             <id>commons-logging</id>

@@ -27,6 +27,8 @@ public class MethodPerformanceAdvice extends AroundAdvice {
         // Throw the joingpoint to its correct type
         MethodJoinPoint methodJointPoint = (MethodJoinPoint)joinPoint;
 
+        System.out.println("Triggered MethodPerformanceAdvice");
+
         // Take the time for the method being executed.
         long currentTime = System.currentTimeMillis();
 

@@ -6,5 +6,7 @@
     <goal name="default" prereqs="java:compile, jar:jar, jar:install">
 
     </goal>
+
+    <goal name="clean-it" prereqs="clean"/>
 </project>
 

@@ -26,6 +26,8 @@ public class SequenceCallerSideAdvice extends PreAdvice {
     public void execute(JoinPoint joinPoint) throws Throwable {
         CallerSideJoinPoint jp = (CallerSideJoinPoint)joinPoint;
 
+        System.out.println("Triggered SequenceCallerSideAdvice");
+
         // Generate Parameter list of types and names
         Class[] parameterTypes = jp.getCalleeMethodParameterTypes();
 
