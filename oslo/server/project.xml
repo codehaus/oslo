@@ -7,6 +7,34 @@
     <groupId>oslo</groupId>
     <name>oslo-server</name>
 
+        <!-- jar files the project is dependent on -->
+    <dependencies>
+        <!-- Prevayler -->
+        <dependency>
+            <id>prevayler</id>
+            <version>2.00.000dev</version>
+        </dependency>
+
+        <!-- Sequence diagram viewer -->
+        <dependency>
+            <id>sequence</id>
+            <version>1.0</version>
+        </dependency>
+
+        <!-- Oslo dependencies -->
+        <dependency>
+            <groupId>oslo</groupId>
+            <artifactId>oslo-common</artifactId>
+            <version>0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>oslo</groupId>
+            <artifactId>oslo-plugins</artifactId>
+            <version>0.1</version>
+        </dependency>
+    </dependencies>
+
     <!-- build information for the project -->
     <build>
         <nagEmailAddress>christian@inx-soft.com</nagEmailAddress>

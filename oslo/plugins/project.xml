@@ -7,6 +7,35 @@
     <groupId>oslo</groupId>
     <name>oslo-plugins</name>
 
+
+    <!-- jar files the project is dependent on -->
+    <dependencies>
+        <!-- Prevayler -->
+        <dependency>
+            <id>prevayler</id>
+            <version>2.00.000dev</version>
+        </dependency>
+
+        <!-- Sequence diagram viewer -->
+        <dependency>
+            <id>sequence</id>
+            <version>1.0</version>
+        </dependency>
+
+        <!-- Oslo dependencies -->
+        <dependency>
+            <groupId>oslo</groupId>
+            <artifactId>oslo-common</artifactId>
+            <version>0.1</version>
+        </dependency>
+
+        <!-- Other dependencies -->
+        <dependency>
+            <id>commons-logging</id>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
     <!-- build information for the project -->
     <build>
         <nagEmailAddress>christian@inx-soft.com</nagEmailAddress>
@@ -21,14 +50,5 @@
                 <exclude>**/NaughtyTest.java</exclude>
             </excludes>
         </unitTest>
-
-        <resources>
-            <resource>
-                <directory>src/conf</directory>
-                <includes>
-                    <include>*.properties</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
 </project>
