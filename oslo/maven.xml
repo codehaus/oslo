@@ -100,12 +100,16 @@
         <echo>${message}</echo>
     </goal>
 
-    <goal name="oslo:execute:console"> <!--prereqs="oslo:aspectwerkz:preprocess">-->
+    <goal name="oslo:execute:console">
         <!-- ClassPath for the sample file -->
         <path id="execute.path">
+            <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
             <path refid="maven.dependency.classpath"/>
             <pathelement path="${maven.build.dir}/classes"/>
         </path>
+
+        <property name="cp" refid="execute.path"/>
+        <echo>${cp}</echo>
 
         <!-- Execute the sample class with or without the aspects -->
         <java classname="org.oslo.console.cli.CommandLine" fork="false" classpathref="execute.path" />
