@@ -11,29 +11,29 @@ import java.io.Serializable;
  * To change this template use Options | File Templates.
  */
 public class PerformanceMetric implements Serializable {
-    private long measurementDateMSec;
+    private int id;
+    private String className;
     private String methodeName;
+    private String ip;
+    private long measurementDateMSec;
     private long innTimeMSec;
     private long outTimeMSec;
-    private String ip;
-    private String className;
-    private Long id;
 
-    public PerformanceMetric(Long id, long measurementDateMSec, String methodeName, long innTimeMSec, long outTimeMSec, String ip, String className) {
-        this.measurementDateMSec = measurementDateMSec;
+    public PerformanceMetric(int id, String className, String methodeName, String ip, long measurementDateMSec, long innTimeMSec, long outTimeMSec) {
+        this.id = id;
+        this.className = className;
         this.methodeName = methodeName;
+        this.ip = ip;
+        this.measurementDateMSec = measurementDateMSec;
         this.innTimeMSec = innTimeMSec;
         this.outTimeMSec = outTimeMSec;
-        this.ip = ip;
-        this.className = className;
-        this.id = id;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
