@@ -297,7 +297,7 @@
     <build>
         <nagEmailAddress>christian@inx-soft.com</nagEmailAddress>
         <sourceDirectory>src/java</sourceDirectory>
-        <unitTestSourceDirectory>src/java</unitTestSourceDirectory>
+        <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
 
         <unitTest>
             <includes>
