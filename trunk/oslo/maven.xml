@@ -128,10 +128,10 @@
     </goal>
 
     <goal name="oslo:cleanup">
-        <delete dir="${maven.build.dir}"/>
-        <delete file="java.output"/>
-        <delete file="server.java.output"/>
-        <delete>
+        <delete quiet="true" dir="${maven.build.dir}"/>
+        <delete quiet="true" file="java.output"/>
+        <delete quiet="true" file="server.java.output"/>
+        <delete quiet="true">
             <fileset dir="./database" includes="**/*"/>
         </delete>
     </goal>
