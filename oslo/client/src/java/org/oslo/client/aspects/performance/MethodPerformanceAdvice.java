@@ -1,4 +1,4 @@
-package org.oslo.aspects.performance;
+package org.oslo.client.aspects.performance;
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <aspectwerkz>
     <advice name="performance"
-        advice="org.oslo.aspects.performance.MethodPerformanceAdvice"
+        advice="org.oslo.client.aspects.performance.MethodPerformanceAdvice"
         deployment-model="perJVM"/>
 
     <advice name="callersidesequence"
-        advice="org.oslo.aspects.sequence.SequenceCallerSideAdvice"
+        advice="org.oslo.client.aspects.sequence.SequenceCallerSideAdvice"
         deployment-model="perJVM"/>
 
     <!--<aspect class="org.oslo.sample.*">
