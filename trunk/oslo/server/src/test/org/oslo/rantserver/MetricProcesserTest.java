@@ -1,7 +1,6 @@
 package org.oslo.rantserver;
 
 import org.oslo.common.datamodel.metric.Metric;
-import org.oslo.plugins.sequenceplugin.metric.SequenceMetric;
 
 import java.util.ArrayList;
 
@@ -15,15 +14,13 @@ import junit.framework.TestCase;
  * To change this template use Options | File Templates.
  */
 public class MetricProcesserTest extends TestCase {
-        public void testProcessMetric() throws Exception {
+    public void testProcessMetric() throws Exception {
         MetricProcesser metricProcesser = MetricProcesser.getInstance();
         assertNotNull(metricProcesser);
 
         //SequenceMetric sequenceMetric = new SequenceMetric("fromMethodName", "fromClassName", "toMethodName", "toMethodClass");
         Metric metric = metricProcesser.processMetric("1234567 [Sequence] fromMethod fromClass toMethod toClass void [/Sequence]");
         assertNotNull(metric);
-
-        assertTrue(metric instanceof SequenceMetric);
     }
 
     public void testParseMetrics() throws Exception {

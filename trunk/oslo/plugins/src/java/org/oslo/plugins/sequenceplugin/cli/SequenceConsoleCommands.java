@@ -4,8 +4,8 @@ import org.oslo.common.cli.CommandLineInterpreter;
 import org.oslo.common.datamodel.process.Process;
 import org.oslo.common.datamodel.group.MetricGroup;
 import org.oslo.common.datamodel.metric.Metric;
-import org.oslo.rantserver.prevayler.system.RantSystem;
-import org.oslo.rantserver.prevayler.persistance.PrevaylerPersister;
+import org.oslo.common.prevayler.system.RantSystem;
+import org.oslo.common.prevayler.persistance.PrevaylerPersister;
 import org.oslo.plugins.sequenceplugin.metric.SequenceMetric;
 import org.prevayler.Prevayler;
 

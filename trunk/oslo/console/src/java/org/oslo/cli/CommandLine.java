@@ -2,8 +2,8 @@ package org.oslo.cli;
 
 import org.prevayler.Prevayler;
 import org.oslo.common.cli.CommandLineInterpreter;
-import org.oslo.rantserver.prevayler.persistance.PrevaylerPersister;
-import org.oslo.rantserver.prevayler.system.RantSystem;
+import org.oslo.common.prevayler.persistance.PrevaylerPersister;
+import org.oslo.common.prevayler.system.RantSystem;
 import org.oslo.plugins.sequenceplugin.cli.SequenceConsoleCommands;
 import org.oslo.plugins.performanceplugin.cli.PeformanceConsoleCommands;
 import org.oslo.cli.base.BaseConsoleCommands;
