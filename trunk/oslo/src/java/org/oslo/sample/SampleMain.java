@@ -8,17 +8,18 @@ package org.oslo.sample;
  * To change this template use Options | File Templates.
  */
 public class SampleMain {
-  SampleLevel1 sampleLevel1 = new SampleLevel1();
+    SampleLevel1 sampleLevel1 = new SampleLevel1();
 
-  public SampleMain() {
-  }
+    public SampleMain() {
+    }
 
-  public static void main(String[] args) {
-    SampleMain sampleMain = new SampleMain();
-    sampleMain.doSomething();
-  }
+    public static void main(String[] args) {
+        SampleMain sampleMain = new SampleMain();
+        sampleMain.doSomething();
+    }
 
-  public void doSomething() {
-    boolean result = sampleLevel1.doSomethingLevel1();
-  }
+    public void doSomething() {
+        boolean result = sampleLevel1.doSomethingLevel1();
+        sampleLevel1.doSomethingLevel2_nr2("Hello", 10, new SampleLevel2());
+    }
 }

@@ -15,6 +15,10 @@
         classname="org.codehaus.aspectwerkz.task.OfflineTransformationTask"
         classpath="${aspectwerkz.classpath}"/>
 
+    <!--<taskdef name="compileWeaveModelFromClasses"
+        classname="org.codehaus.aspectwerkz.task.ClassFileMetaDataCompilerTask"
+        classpath="${aspectwerkz.classpath}"/>-->
+
     <!-- =================================================== -->
     <!--  Compile the classes with AspectWerkz               -->
     <!-- =================================================== -->
@@ -32,12 +36,17 @@
         <!-- Create the meta-data directory -->
         <mkdir dir="${maven.build.dir}/_metaData"/>
 
+        <!--<compileWeaveModelFromClasses
+            definitionFile="${maven.src.dir}/aspectwerkz/oslo.xml"
+            repository="${maven.build.dir}/classes"
+            metaDataDir="${maven.build.dir}/_metaData"/>-->
         <!-- Create the meta data weave -->
-        <!--<java classname="aspectwerkz.definition.metadata.ClassFileMetaDataCompiler" fork="true" classpathref="maven.dependency.classpath" output="java.output">
+        <java classname="org.codehaus.aspectwerkz.definition.metadata.ClassFileMetaDataCompiler" fork="true" classpathref="maven.dependency.classpath" output="java.output">
             <arg value="${maven.src.dir}/aspectwerkz/oslo.xml"/>
             <arg value="${maven.build.dir}/classes"/>
             <arg value="${maven.build.dir}/_metaData"/>
-        </java>-->
+        </java>
+
 
         <!-- Preprocess the class files -->
         <path id="aspectwerkz.fixed.classpath">
@@ -97,6 +106,7 @@
             <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
             <path refid="maven.dependency.classpath"/>
             <pathelement path="${maven.build.dir}/classes"/>
+            <pathelement path="${maven.src.dir}/properties"/>
         </path>
 
         <java classname="org.oslo.server.RantLoggingServer" fork="true" classpathref="execute.path" output="server.java.output"/>

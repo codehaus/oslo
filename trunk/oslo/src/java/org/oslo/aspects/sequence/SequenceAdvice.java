@@ -45,6 +45,22 @@ public class SequenceAdvice extends PreAdvice {
         sequenceMetric.setPluginName(SequencePlugin.class.getName());
         dataProducer.logMetric(sequenceMetric);
 
+        // List all the types of the method
+        /*Class classes[] = jp.getParameterTypes();
+
+        for (int i = 0; i < classes.length; i++) {
+            Class aClass = classes[i];
+            System.out.println("ParameterType: " + aClass);
+        }
+
+        // Methods
+        String strings[] = jp.getParameterTypeNames();
+
+        for (int i = 0; i < strings.length; i++) {
+            String string = strings[i];
+            System.out.println("ParameterTypeName: " + string);
+        } */
+
         final Object result = joinPoint.proceed();
     }
 

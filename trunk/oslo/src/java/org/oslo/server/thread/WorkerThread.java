@@ -4,6 +4,8 @@ import org.oslo.server.prevayler.persistance.PrevaylerPersister;
 import org.oslo.server.prevayler.system.RantSystem;
 import org.oslo.server.prevayler.transaction.PerformanceMetricCreateTransaction;
 import org.oslo.server.infounits.PerformanceMetric;
+import org.oslo.server.MetricProcesser;
+import org.oslo.server.metric.Metric;
 import org.prevayler.Prevayler;
 
 import java.nio.ByteBuffer;
@@ -140,6 +142,13 @@ public class WorkerThread extends Thread {
         byte bytes[] = byteArrayOutputStream.toByteArray();
 
         if (bytes.length > 0) {
+            MetricProcesser metricProcesser = MetricProcesser.getInstance();
+
+            try {
+                Metric metric = metricProcesser.processMetric(new String(bytes));
+            } catch (Exception e) {
+                e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+            }
             // Ok get the prevayler object, save the data to it..
 /*            PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
             Prevayler prevayler = prevaylerPersister.getPrevayler();

@@ -4,9 +4,15 @@
         advice="org.oslo.aspects.LoggingAdvice"
         deployment-model="perJVM"/>
 
-    <advice name="sequence"
+    <introduction name="processid"
+        interface="org.oslo.aspects.introduction.RantProcessIDIntroduction"
+        implementation="org.oslo.aspects.introduction.RantProcessIDIntroductionImpl"
+        deployment-model="perJVM"
+        />
+
+    <!--<advice name="sequence"
         advice="org.oslo.aspects.sequence.SequenceAdvice"
-        deployment-model="perJVM"/>
+        deployment-model="perJVM"/> -->
 
     <!--<aspect class="org.oslo.sample.*">
         <pointcut type="method" pattern="* do*(..)">
@@ -15,9 +21,11 @@
     </aspect>-->
 
     <aspect class="org.oslo.sample.*">
-        <pointcut type="callerSide" pattern="*#* d*(..)">
+        <!--<pointcut type="callerSide" pattern="*#* d*(..)">
             <advice-ref name="sequence"/>
-        </pointcut>
+        </pointcut>     -->
+        <introduction-ref name="processid"/>
+
         <pointcut type="method" pattern="* do*(..)">
             <advice-ref name="logging"/>
         </pointcut>
