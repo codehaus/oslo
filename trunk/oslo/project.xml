@@ -52,6 +52,14 @@
         <url>http://cvs.codehaus.org/viewcvs.cgi/aspectwerkz/?cvsroot=oslo</url>
     </repository>
 
+    <versions>
+        <version>
+            <id>current</id>
+            <name>Current</name>
+            <tag>HEAD</tag>
+        </version>
+    </versions>
+
     <!-- any mailing lists for the project -->
     <mailingLists/>
 
@@ -191,6 +199,18 @@
         </resources>
     </build>
 
+    <reports>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-jxr-plugin</report>
+        <report>maven-tasklist-plugin</report>
+        <report>maven-jdepend-plugin</report>
+        <report>maven-changelog-plugin</report>
+        <report>maven-file-activity-plugin</report>
+        <report>maven-developer-activity-plugin</report>
+        <!--        <report>maven-junit-report-plugin</report>-->
+        <!--        <report>maven-clover-plugin</report>-->
+        <!--        <report>maven-checkstyle-plugin</report>-->
+    </reports>
 
 </project>
 
