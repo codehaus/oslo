@@ -16,11 +16,11 @@ public class RantSystem extends ClockedSystem {
 
     private final HashMap performanceMetrics = new HashMap();
 
-    public PerformanceMetric getPerformanceMetric(long id) {
+    public PerformanceMetric getPerformanceMetric(Long id) {
         return (PerformanceMetric)performanceMetrics.get(id);
     }
 
     public void addPerformanceMetric(PerformanceMetric performanceMetric) {
-        performanceMetric.put(performanceMetric.getId(), performanceMetric);
+        performanceMetrics.put(performanceMetric.getId(), performanceMetric);
     }
 }
