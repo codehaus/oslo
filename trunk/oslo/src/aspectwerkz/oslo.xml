@@ -8,18 +8,21 @@
         advice="org.oslo.client.aspects.sequence.SequenceCallerSideAdvice"
         deployment-model="perJVM"/>
 
-    <aspect name="methodAspect">
-        <pointcut-def name="allMethods" type="method" pattern="* *.*(..)">
+    <!-- ============================================= -->
+    <!--  Define the aspects                           -->
+    <!-- ============================================= -->
+    <abstract-aspect name="MyAbstractAspect">
+        <advice pointcut="allMethods">
             <advice-ref name="performance"/>
-        </pointcut-def>
-    </aspect>
-<!--    <aspect class="org.oslo.sampleapp.*">
-        <pointcut type="callerSide" pattern="*#* d*(..)">
-            <advice-ref name="callersidesequence"/>
-        </pointcut>
+        </advice>
 
-        <pointcut type="method" pattern="* *(..)">
-            <advice-ref name="performance"/>
-        </pointcut>
-    </aspect>-->
+        <advice pointcut="allSequence">
+            <advice-ref name="callersidesequence"/>
+        </advice>
+    </abstract-aspect>
+
+    <aspect name="methodAspect" extends="MyAbstractAspect">
+        <pointcut-def name="allMethods" type="method" pattern="* *.*(..)"/>
+        <pointcut-def name="allSequence" type="callerSide" pattern="org.oslo.sampleapp.*->* *.do*(..)"/>
+    </aspect>
 </aspectwerkz>

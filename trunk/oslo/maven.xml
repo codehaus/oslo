@@ -70,10 +70,10 @@
     <!--  Compile the classes with AspectWerkz               -->
     <!-- =================================================== -->
     <goal name="oslo:aspectwerkz:preprocess" prereqs="java:compile">
-        <echo>${maven.src.dir}/aspectwerkz/oslo.xml</echo>
+        <!--<echo>${maven.src.dir}/aspectwerkz/oslo.xml</echo>
         <echo>${aspectwerkz.classpath}</echo>
         <echo>${maven.build.dir}/classes</echo>
-        <echo>aspectwerkz.home=${env.ASPECTWERKZ_HOME}</echo>
+        <echo>aspectwerkz.home=${env.ASPECTWERKZ_HOME}</echo>-->
 
         <!--    <compileClassMetaData
                 definitionFile="${maven.src.dir}/aspectwerkz/oslo.xml"
@@ -89,34 +89,60 @@
             metaDataDir="${maven.build.dir}/_metaData"/>-->
         <!-- Preprocess the class files -->
         <path id="aspectwerkz.fixed.classpath">
-            <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
+            <pathelement path="./devlib/bcel/jars/bcel-patch.jar"/>
+            <pathelement path="./devlib/bcel/jars/bcel.jar"/>
             <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-client-0.1.jar"/>
             <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-common-0.1.jar"/>
             <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-plugins-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/aspectwerkz/jars/aspectwerkz-0.7.4.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/aspectwerkz/jars/aspectwerkz-core-0.7.4.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/ant/jars/ant-1.5.2.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/dom4j/jars/dom4j-1.4.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/qdox/jars/qdox-1.2.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/concurrent/jars/concurrent-1.3.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/trove/jars/trove-1.0.2.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/commons-jexl/jars/commons-jexl-1.0-beta-2.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/piccolo/jars/piccolo-1.03.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/jrexx/jars/jrexx-1.1.1.jar"/>
             <pathelement path="${maven.src.dir}/config"/>
-            <path refid="maven.dependency.classpath"/>
+            <!--<path refid="maven.dependency.classpath"/>-->
         </path>
 
+        <property name="cp" refid="aspectwerkz.fixed.classpath"/>
         <!-- Create the meta data weave -->
-        <java classname="org.codehaus.aspectwerkz.metadata.ClassFileMetaDataCompiler" fork="true" classpathref="aspectwerkz.fixed.classpath" output="java.output">
+        <!--<java classname="org.codehaus.aspectwerkz.metadata.ClassFileMetaDataCompiler" fork="true" classpathref="aspectwerkz.fixed.classpath" output="java.output">
             <jvmarg value="-Daspectwerkz.definition.validate=true"/>
             <arg value="${maven.src.dir}/aspectwerkz/oslo.xml"/>
             <arg value="./sample/target/classes"/>
             <arg value="${maven.build.dir}/_metaData"/>
-        </java>
+        </java>  -->
 
-        <java classname="org.cs3.jmangler.offline.starter.Main" classpathref="aspectwerkz.fixed.classpath" fork="true" append="true" output="java.output">
-            <jvmarg value="-Daspectwerkz.definition.file=${maven.src.dir}/aspectwerkz/oslo.xml"/>
-            <jvmarg value="-Daspectwerkz.home=${maven.src.dir}"/>
-            <jvmarg value="-Daspectwerkz.metadata.dir=${maven.build.dir}/_metaData"/>
-            <jvmarg value="-Dorg.cs3.jmangler.initfile=${maven.src.dir}/config/jmangler-order.config"/>
-            <arg value="--cp"/>
+        <echo>${cp}</echo>
+
+        <exec executable="java">
+            <arg line="-Daspectwerkz.definition.file=${maven.src.dir}/aspectwerkz/oslo.xml"/>
+            <arg line="-Daspectwerkz.home=${maven.src.dir}"/>
+            <arg line="-cp"/>
+            <arg line="${cp}"/>
+            <arg line="org.codehaus.aspectwerkz.compiler.AspectWerkzC"/>
+            <arg line="-verbose"/>
             <arg value="./sample/target/classes"/>
-            <arg value="--tcp"/>
+        </exec>
+
+<!--        <java classname="org.codehaus.aspectwerkz.compiler.AspectWerkzC" classpathref="aspectwerkz.fixed.classpath" fork="true" append="true" output="java.output">
+            <jvmarg value="-Daspectwerkz.definition.file=${maven.src.dir}/aspectwerkz/oslo.xml"/>
+            <jvmarg value="-Daspectwerkz.transform.verbose=yes"/>
+            <jvmarg value="-Daspectwerkz.home=${maven.src.dir}"/>-->
+<!--            <jvmarg value="-Daspectwerkz.metadata.dir=${maven.build.dir}/_metaData"/>
+            <jvmarg value="-Dorg.cs3.jmangler.initfile=${maven.src.dir}/config/jmangler-order.config"/>-->
+<!--            <arg value="-cp"/>
+            <arg value="./sample/target/classes"/>
+            <arg value="-tcp"/>
             <arg value="${basedir}/devlib/aspectwerkz/jars/aspectwerkz-0.7.4.jar"/>
-            <arg value="--cf"/>
-            <arg value="${maven.src.dir}/config/aspectwerkz.conf"/>
-        </java> -->
+            <arg value="-cf"/>
+            <arg value="${maven.src.dir}/config/aspectwerkz.conf"/>-->
+<!--            <arg value="./sample/target/classes"/>
+        </java>                                       -->
 
         <!--<jvmarg value="-Daspectwerkz.metadata.dir=${maven.build.dir}/_metaData"/>-->
 
@@ -178,7 +204,7 @@
         <java classname="org.oslo.cli.CommandLine" fork="false" classpathref="execute.path" />
     </goal>
 
-    <goal name="oslo:start:server" prereqs="oslo:cleanup, oslo:aspectwerkz:preprocess">
+    <goal name="oslo:start:server"> <!--prereqs="oslo:cleanup, oslo:aspectwerkz:preprocess">-->
         <!--<echo>${env.MAVEN_HOME}/repository/oslo/oslo-console-0.1.jar</echo>-->
 
         <!-- ClassPath for the sample file -->
@@ -195,7 +221,7 @@
         <java classname="org.oslo.rantserver.RantLoggingServer" fork="true" classpathref="execute.path" output="server.java.output"/>
 
         <!-- Load the output and display it -->
-        <loadfile property="message" srcFile="java.output"/>
+        <loadfile property="message" srcFile="server.java.output"/>
         <echo>${message}</echo>
     </goal>
 
