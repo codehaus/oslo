@@ -70,12 +70,20 @@ public class CommandLine {
 
                 // Check if the interpreter exists
                 if (interpreter != null) {
-                    String message = interpreter.execute(inputLine);
+
+
+                    String message = null;
+                    try {
+                        message = interpreter.execute(inputLine);
+                        System.out.println(message);
+                    } catch (Exception e) {
+                        System.out.println("Illegal command, type HELP for available commands");
+                        e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+                    }
 
                     // Write the information to the stringbuffer (for later writing to the log file)
                     //writeBuffer.append("COMMAND:> " + inputLine + "\n" + message + "\n");
                     // Write the result to the console
-                    System.out.println(message);
                 } else {
                     // Check if this is the help command
                     executeBaseSystemCommands(inputLine, index);
