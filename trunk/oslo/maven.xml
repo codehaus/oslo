@@ -168,9 +168,16 @@
     </goal>
 
     <goal name="oslo:start:server" prereqs="oslo:cleanup, oslo:aspectwerkz:preprocess">
+        <!--<echo>${env.MAVEN_HOME}/repository/oslo/oslo-console-0.1.jar</echo>-->
+
         <!-- ClassPath for the sample file -->
         <path id="execute.path">
             <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-common-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-plugins-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-server-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-console-0.1.jar"/>
+            <pathelement path="${env.MAVEN_HOME}/repository/oslo/jars/oslo-client-0.1.jar"/>
             <path refid="maven.dependency.classpath"/>
             <pathelement path="${maven.src.dir}/properties"/>
         </path>
