@@ -155,6 +155,12 @@
             <id>commons-collections</id>
             <version>2.0</version>
         </dependency>
+
+        <!-- Sequence diagram viewer -->
+        <dependency>
+            <id>sequence</id>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <!-- build information for the project -->
