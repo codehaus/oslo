@@ -9,6 +9,7 @@ package org.oslo.rantserver;
 
 import org.oslo.common.datamodel.metric.Metric;
 import org.oslo.common.plugin.Plugin;
+import org.oslo.common.plugin.PluginDiscoveryService;
 
 import java.util.*;
 import java.util.jar.JarInputStream;
