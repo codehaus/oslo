@@ -5,7 +5,6 @@ import org.oslo.server.prevayler.system.RantSystem;
 import org.oslo.server.MetricProcesser;
 import org.oslo.server.prevayler.datamodel.metric.Metric;
 import org.prevayler.Prevayler;
-import org.prevayler.implementation.SnapshotPrevayler;
 import org.oslo.server.prevayler.datamodel.process.Process;
 import org.oslo.server.prevayler.datamodel.group.MetricGroup;
 import org.oslo.server.prevayler.transaction.process.ProcessCreateTransaction;

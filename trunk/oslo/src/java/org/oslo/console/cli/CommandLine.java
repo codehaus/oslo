@@ -9,6 +9,7 @@ import org.oslo.server.prevayler.datamodel.metric.Metric;
 import org.oslo.metrics.sequence.SequenceMetric;
 import org.oslo.plugins.sequence.SequencePlugin;
 import org.oslo.console.cli.base.BaseConsoleCommands;
+import org.oslo.console.CommandLineInterpreter;
 
 import java.util.*;
 import java.io.*;

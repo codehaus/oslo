@@ -5,7 +5,7 @@ import org.oslo.server.prevayler.datamodel.metric.Metric;
 import org.oslo.server.prevayler.persistance.PrevaylerPersister;
 import org.oslo.server.prevayler.system.RantSystem;
 import org.oslo.metrics.sequence.SequenceMetric;
-import org.oslo.console.cli.CommandLineInterpreter;
+import org.oslo.console.CommandLineInterpreter;
 import org.prevayler.Prevayler;
 import org.oslo.server.prevayler.datamodel.process.Process;
 import org.oslo.server.prevayler.datamodel.group.MetricGroup;
@@ -366,15 +366,6 @@ public class SequencePlugin implements Plugin, CommandLineInterpreter {
         return classString.substring(0, classString.length() - 1) + "> " + "\"" + sequenceMetric.getReturnType() + "\" " + addString + ")";
     }
 
-
-/*    public static void main(String[] args) throws Exception {
-        new SequencePlugin().output();
-    }*/
-
-    /*public void output() throws IOException {
-        outputPng(layoutDiagram(createDiagram()));
-    } */
-
     private void generateSequenceDiagramPNG(String outputFile, String sequenceString) throws Exception {
         // Create the diagram
         Diagram diagram = new Diagram(new SimpleParserImpl(), new NodeFactoryImpl());
@@ -406,40 +397,6 @@ public class SequencePlugin implements Plugin, CommandLineInterpreter {
         ImageIO.write(png, "png", new File(outputFile));
     }
 
-    /*private Diagram createDiagram() throws FileNotFoundException {
-        Diagram diagram = new Diagram(new SimpleParserImpl(), new NodeFactoryImpl());
-        diagram.parse(new PushbackReader(new FileReader(inFileName)));
-        return diagram;
-    }
-
-    private LayoutData layoutDiagram(Diagram diagram) {
-        BufferedImage bi = new BufferedImage(10, 10, 2);
-        Graphics2D graphics = bi.createGraphics();
-        com.zanthan.sequence.layout.StringMeasure sm = new SwingStringMeasure(graphics);
-        LayoutData layoutData = new LayoutData(sm);
-        diagram.layout(layoutData);
-        return layoutData;
-    }
-
-    private void outputPng(LayoutData layoutData) throws IOException {
-        int height = layoutData.getHeight();
-        int width = layoutData.getWidth();
-        BufferedImage png = new BufferedImage(width, height, 2);
-        Graphics2D pngGraphics = png.createGraphics();
-        pngGraphics.setClip(0, 0, width, height);
-        Map hintsMap = new HashMap();
-
-        hintsMap.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        pngGraphics.addRenderingHints(hintsMap);
-        pngGraphics.setBackground(Color.white);
-        pngGraphics.setColor(Color.white);
-        pngGraphics.fillRect(0, 0, width, height);
-        SwingPainter painter = new SwingPainter();
-        painter.setGraphics(pngGraphics);
-        layoutData.paint(painter);
-        ImageIO.write(png, "png", new File(outFileName));
-    }
-
     private String inFileName = "./sequence.txt";
-    private String outFileName = "./sequence.png";*/
+    private String outFileName = "./sequence.png";
 }
