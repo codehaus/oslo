@@ -16,7 +16,7 @@ import java.io.FileInputStream;
  * Time: 3:18:42 PM
  * To change this template use Options | File Templates.
  */
-public class PluginDiscoveryService {
+public class ClassDiscoveryService {
 
     /**
      * Finds and returns a list of all Plugins available in the classpath
@@ -24,9 +24,9 @@ public class PluginDiscoveryService {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public static ArrayList discoverPlugins() throws IOException, ClassNotFoundException {
+    public static ArrayList discoverPlugins(String extendsClassName) throws IOException, ClassNotFoundException {
         // Find java home, adjust for MAC OSX
-        /*String javaHome = System.getProperty("java.home");
+        String javaHome = System.getProperty("java.home");
 
         if (System.getProperty("os.name").toUpperCase().equals("MAC OS X")) {
             javaHome = javaHome.substring(0, javaHome.lastIndexOf("/"));
@@ -70,7 +70,7 @@ public class PluginDiscoveryService {
                             if (jarEntry != null && !jarEntry.isDirectory()) {
                                 // Its a file entry, check that it is a .class file
                                 String elementName = jarEntry.getName();
-                                plugins = validateEntry(elementName, plugins);
+                                plugins = validateEntry(extendsClassName, elementName, plugins);
                             }
                         }
                     }
@@ -80,15 +80,12 @@ public class PluginDiscoveryService {
 
                     for (Iterator iterator = directoryFiles.iterator(); iterator.hasNext();) {
                         String fileString = (String) iterator.next();
-                        plugins = validateEntry(fileString, plugins);
+                        plugins = validateEntry(extendsClassName, fileString, plugins);
                     }
                 }
                 System.out.println(classpathElement);
             }
-        }  */
-        ArrayList plugins = new ArrayList();
-        plugins.add("org.oslo.plugins.performanceplugin.plugin.PerformancePlugin");
-        plugins.add("org.oslo.plugins.sequenceplugin.plugin.SequencePlugin");
+        }
 
         return plugins;
     }
@@ -100,24 +97,40 @@ public class PluginDiscoveryService {
      * @return
      * @throws ClassNotFoundException
      */
-    private static ArrayList validateEntry(String elementName, ArrayList plugins) throws ClassNotFoundException {
+    private static ArrayList validateEntry(String className, String elementName, ArrayList plugins) throws ClassNotFoundException {
         // Replace seperator, so that it is correct according to the classloading standard
-        /*elementName = elementName.replace(File.separatorChar, '.');
+        elementName = elementName.replace(File.separatorChar, '.');
 
         // Check if this is in fact a class
         if (elementName.lastIndexOf(".class") != -1 && (elementName.indexOf("sun.") != 0 && elementName.indexOf("java.") != 0) && elementName.indexOf("javax.") != 0) {
             try {
-                Class elementClass = PluginDiscoveryService.class.getClassLoader().loadClass(elementName.substring(0, elementName.lastIndexOf(".class")));
+                Class elementClass = ClassDiscoveryService.class.getClassLoader().loadClass(elementName.substring(0, elementName.lastIndexOf(".class")));
 
-                // Get interfaces
-                Class[] interfaces = elementClass.getInterfaces();
+                // Get the class we are testing against and check if its an interface or class
+                Class checkClass = Class.forName(className);
 
-                // Traverse interfaces and check if it contains plugins
-                for (int i = 0; i < interfaces.length; i++) {
-                    Class anInterface = interfaces[i];
+                if (checkClass.isInterface()) {
+                    Class[] classElements = null;
+                    classElements = elementClass.getInterfaces();
 
-                    if ("org.oslo.common.plugin.Plugin".equals(anInterface.getName())) {
-                        plugins.add(elementClass.getName());
+                    // Traverse classElements and check if it contains plugins
+                    for (int i = 0; i < classElements.length; i++) {
+                        Class anClassElement = classElements[i];
+
+                        if (className.equals(anClassElement.getName())) {
+                            plugins.add(elementClass.getName());
+                        }
+                    }
+                } else {
+                    Class tempElementClass = elementClass;
+
+                    if (!checkClass.getName().equals(tempElementClass.getName())) {
+                        while (!tempElementClass.getName().equals(checkClass.getName()) && !tempElementClass.getName().equals(Object.class.getName()))
+                            tempElementClass = tempElementClass.getSuperclass();
+
+                        if (tempElementClass.getName().equals(checkClass.getName())) {
+                            plugins.add(elementClass.getName());
+                        }
                     }
                 }
             } catch (Throwable e) {
@@ -125,7 +138,7 @@ public class PluginDiscoveryService {
                 // Ignore faults...
                 //e.printStackTrace();  //To change body of catch statement use Options | File Templates.
             }
-        } */
+        }
 
         return plugins;
     }
