@@ -20,6 +20,7 @@ public class SampleMain {
     }
 
     public void doSomething() {
+        System.out.println("doSomething()");
         boolean result = sampleLevel1.doSomethingLevel1();
         sampleLevel1.doSomethingLevel2_nr2("Hello", 10, new SampleLevel2());
     }

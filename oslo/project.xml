@@ -99,6 +99,37 @@
             <version>3.8.1</version>
         </dependency>
 
+        <!-- Oslo dependencies -->
+        <dependency>
+            <groupId>oslo</groupId>
+            <artifactId>oslo-common</artifactId>
+            <version>0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>oslo</groupId>
+            <artifactId>oslo-server</artifactId>
+            <version>0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>oslo</groupId>
+            <artifactId>oslo-plugins</artifactId>
+            <version>0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>oslo</groupId>
+            <artifactId>oslo-console</artifactId>
+            <version>0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>oslo</groupId>
+            <artifactId>oslo-client</artifactId>
+            <version>0.1</version>
+        </dependency>
+
         <!-- AspectWerkz dependencies -->
         <dependency>
             <id>aspectwerkz</id>

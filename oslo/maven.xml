@@ -57,6 +57,14 @@
             ignoreFailures="false"/>
     </goal>
 
+    <goal name="clean-all" prereqs="clean" description="Build all components using reactor">
+        <maven:reactor
+            basedir="${basedir}"
+            includes="*/project.xml"
+            goals="clean-it"
+            banner="Building"
+            ignoreFailures="false"/>
+    </goal>
 
     <!-- =================================================== -->
     <!--  Compile the classes with AspectWerkz               -->
@@ -82,7 +90,7 @@
         <!-- Create the meta data weave -->
         <java classname="org.codehaus.aspectwerkz.definition.metadata.ClassFileMetaDataCompiler" fork="true" classpathref="maven.dependency.classpath" output="java.output">
             <arg value="${maven.src.dir}/aspectwerkz/oslo.xml"/>
-            <arg value="${maven.build.dir}/classes"/>
+            <arg value="./sample/target/classes"/>
             <arg value="${maven.build.dir}/_metaData"/>
         </java>
 
@@ -100,7 +108,7 @@
             <jvmarg value="-Daspectwerkz.metadata.dir=${maven.build.dir}/_metaData"/>
             <jvmarg value="-Dorg.cs3.jmangler.initfile=${maven.src.dir}/config/jmangler-order.config"/>
             <arg value="--cp"/>
-            <arg value="${maven.build.dir}/classes"/>
+            <arg value="./sample/target/classes"/>
             <arg value="--tcp"/>
             <arg value="${basedir}/devlib/aspectwerkz/jars/aspectwerkz-0.5.jar"/>
             <arg value="--cf"/>
@@ -122,9 +130,9 @@
     <goal name="oslo:execute:sample"> <!--prereqs="oslo:aspectwerkz:preprocess">-->
         <!-- ClassPath for the sample file -->
         <path id="execute.path">
+            <pathelement path="./sample/target/classes"/>
             <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
             <path refid="maven.dependency.classpath"/>
-            <pathelement path="${maven.build.dir}/classes"/>
         </path>
 
         <!-- Execute the sample class with or without the aspects -->
@@ -164,11 +172,10 @@
         <path id="execute.path">
             <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
             <path refid="maven.dependency.classpath"/>
-            <pathelement path="${maven.build.dir}/classes"/>
             <pathelement path="${maven.src.dir}/properties"/>
         </path>
 
-        <java classname="org.oslo.server.RantLoggingServer" fork="true" classpathref="execute.path" output="server.java.output"/>
+        <java classname="org.oslo.rantserver.RantLoggingServer" fork="true" classpathref="execute.path" output="server.java.output"/>
 
         <!-- Load the output and display it -->
         <loadfile property="message" srcFile="java.output"/>

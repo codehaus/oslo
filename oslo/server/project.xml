@@ -7,12 +7,18 @@
     <groupId>oslo</groupId>
     <name>oslo-server</name>
 
-        <!-- jar files the project is dependent on -->
+    <!-- jar files the project is dependent on -->
     <dependencies>
         <!-- Oslo dependencies -->
         <dependency>
             <groupId>oslo</groupId>
             <artifactId>oslo-common</artifactId>
+            <version>0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>oslo</groupId>
+            <artifactId>oslo-plugins</artifactId>
             <version>0.1</version>
         </dependency>
 
