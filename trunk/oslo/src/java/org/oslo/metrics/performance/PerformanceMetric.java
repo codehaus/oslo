@@ -1,6 +1,6 @@
 package org.oslo.metrics.performance;
 
-import org.oslo.server.prevayler.datamodel.metric.Metric;
+import org.oslo.common.datamodel.metric.Metric;
 
 import java.util.Date;
 import java.io.Serializable;

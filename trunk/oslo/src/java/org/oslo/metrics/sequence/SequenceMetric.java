@@ -1,6 +1,6 @@
 package org.oslo.metrics.sequence;
 
-import org.oslo.server.prevayler.datamodel.metric.Metric;
+import org.oslo.common.datamodel.metric.Metric;
 import org.oslo.plugins.sequence.SequencePlugin;
 
 import java.io.Serializable;

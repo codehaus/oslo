@@ -1,15 +1,15 @@
 package org.oslo.plugins.sequence;
 
-import org.oslo.server.plugin.Plugin;
-import org.oslo.server.plugin.PluginImpl;
-import org.oslo.server.prevayler.datamodel.metric.Metric;
+import org.oslo.common.plugin.Plugin;
+import org.oslo.common.plugin.PluginImpl;
+import org.oslo.common.datamodel.metric.Metric;
 import org.oslo.server.prevayler.persistance.PrevaylerPersister;
 import org.oslo.server.prevayler.system.RantSystem;
 import org.oslo.metrics.sequence.SequenceMetric;
-import org.oslo.console.CommandLineInterpreter;
+import org.oslo.common.cli.CommandLineInterpreter;
 import org.prevayler.Prevayler;
-import org.oslo.server.prevayler.datamodel.process.Process;
-import org.oslo.server.prevayler.datamodel.group.MetricGroup;
+import org.oslo.common.datamodel.process.Process;
+import org.oslo.common.datamodel.group.MetricGroup;
 
 import java.util.*;
 import java.security.InvalidParameterException;

@@ -1,9 +1,9 @@
 package org.oslo.plugins.performance;
 
-import org.oslo.server.plugin.Plugin;
-import org.oslo.server.plugin.PluginImpl;
-import org.oslo.server.prevayler.datamodel.metric.Metric;
-import org.oslo.console.CommandLineInterpreter;
+import org.oslo.common.plugin.Plugin;
+import org.oslo.common.plugin.PluginImpl;
+import org.oslo.common.datamodel.metric.Metric;
+import org.oslo.common.cli.CommandLineInterpreter;
 import org.oslo.metrics.performance.PerformanceMetric;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
