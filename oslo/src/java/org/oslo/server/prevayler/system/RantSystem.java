@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.Date;
 import java.util.Iterator;
 
-import org.oslo.server.prevayler.datamodel.process.Process;
-import org.oslo.server.prevayler.datamodel.group.MetricGroup;
-import org.oslo.server.prevayler.datamodel.metric.Metric;
+import org.oslo.common.datamodel.process.Process;
+import org.oslo.common.datamodel.group.MetricGroup;
+import org.oslo.common.datamodel.metric.Metric;
 
 /**
  * Created by IntelliJ IDEA.

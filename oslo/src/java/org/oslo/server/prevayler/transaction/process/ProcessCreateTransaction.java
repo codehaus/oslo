@@ -2,7 +2,7 @@ package org.oslo.server.prevayler.transaction.process;
 
 import org.prevayler.util.TransactionWithQuery;
 import org.oslo.server.prevayler.system.RantSystem;
-import org.oslo.server.prevayler.datamodel.process.Process;
+import org.oslo.common.datamodel.process.Process;
 
 /**
  * Created by IntelliJ IDEA.

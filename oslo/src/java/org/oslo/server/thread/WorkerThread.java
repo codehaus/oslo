@@ -3,10 +3,10 @@ package org.oslo.server.thread;
 import org.oslo.server.prevayler.persistance.PrevaylerPersister;
 import org.oslo.server.prevayler.system.RantSystem;
 import org.oslo.server.MetricProcesser;
-import org.oslo.server.prevayler.datamodel.metric.Metric;
+import org.oslo.common.datamodel.metric.Metric;
 import org.prevayler.Prevayler;
-import org.oslo.server.prevayler.datamodel.process.Process;
-import org.oslo.server.prevayler.datamodel.group.MetricGroup;
+import org.oslo.common.datamodel.process.Process;
+import org.oslo.common.datamodel.group.MetricGroup;
 import org.oslo.server.prevayler.transaction.process.ProcessCreateTransaction;
 import org.oslo.server.prevayler.transaction.process.ProcessUpdateTransaction;
 
