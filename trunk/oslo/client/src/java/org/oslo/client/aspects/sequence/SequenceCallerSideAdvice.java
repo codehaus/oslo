@@ -3,7 +3,7 @@ package org.oslo.client.aspects.sequence;
 import org.codehaus.aspectwerkz.advice.PreAdvice;
 import org.codehaus.aspectwerkz.joinpoint.JoinPoint;
 import org.codehaus.aspectwerkz.joinpoint.CallerSideJoinPoint;
-import org.oslo.producer.MetricLogger;
+import org.oslo.client.producer.MetricLogger;
 import org.oslo.plugins.sequenceplugin.plugin.SequencePlugin;
 import org.oslo.plugins.sequenceplugin.metric.SequenceMetric;
 
