@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<aspectwerkz>
+    <advice name="logging"
+        advice="org.oslo.aspects.LoggingAdvice"
+        deploymentModel="perJVM"/>
+
+    <aspect class="org.oslo.sample.*">
+        <pointcut type="method" pattern="do.*">
+            <advice-ref name="logging"/>
+        </pointcut>
+    </aspect>
+</aspectwerkz>
