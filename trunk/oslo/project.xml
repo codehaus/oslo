@@ -26,16 +26,15 @@
     <package>org.oslo</package>
     <logo></logo>
     <description>
-        A sequence diagram generator using aspects
+        Generates sequence diagrams from running code using aspects
     </description>
-    Generates sequence diagrams from running code using aspects
     <shortDescription>
-        Sequence Diagram generator
+        Generates sequence diagrams from running code using aspects
     </shortDescription>
 
     <!-- the project home page -->
-    <url></url>
-    <issueTrackingUrl></issueTrackingUrl>
+    <url>http://oslo.codehaus.org/</url>
+    <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10106</issueTrackingUrl>
     <siteAddress></siteAddress>
     <siteDirectory></siteDirectory>
     <distributionDirectory></distributionDirectory>
@@ -59,14 +58,15 @@
             <email>christian@inx-soft.com</email>
             <organization>None</organization>
             <roles>
+                <role>Project Admin</role>
                 <role>Java Developer</role>
             </roles>
         </developer>
         <developer>
             <name>Aslak Hellesøy</name>
             <id>aslak</id>
-            <email>aslak.hellesoy@bekk.no</email>
-            <organization>None</organization>
+            <email>aslak.hellesoy@netcom.no</email>
+            <organization>Thoughtworks</organization>
             <roles>
                 <role>Java Developer</role>
             </roles>
