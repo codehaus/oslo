@@ -1,4 +1,0 @@
-(CommentFactory newComment
-    (Comment new 
-      (IDGen nextID newId) 
-      (Transaction add)))
