@@ -25,17 +25,15 @@ public class SequenceCallerSideAdvice extends PreAdvice {
     public void execute(JoinPoint joinPoint) throws Throwable {
         CallerSideJoinPoint jp = (CallerSideJoinPoint)joinPoint;
 
-/*        SequenceMetric sequenceMetric = new SequenceMetric("CALLE:" + jp.getTargetClass().getName(), jp.getMethodName());
+        SequenceMetric sequenceMetric = new SequenceMetric(Long.toString(System.currentTimeMillis()), jp.getCallerClassName(), jp.getCallerMethodName(), jp.getCalleeClassName(), jp.getCalleeMethodName());
         sequenceMetric.setPluginName(SequencePlugin.class.getName());
-        dataProducer.logMetric(sequenceMetric);*/
+        dataProducer.logMetric(sequenceMetric);
 
-        System.out.print("CALLER: [getCallerClassName()] = " + jp.getCallerClassName());
+        /*System.out.print("CALLER: [getCallerClassName()] = " + jp.getCallerClassName());
         System.out.print(" [getCallerMethodName()] = " + jp.getCallerMethodName());
         System.out.print(" [getCalleeClassName()] = " + jp.getCalleeClassName());
-        System.out.println(" [getCalleeMethodName()] = " + jp.getCalleeMethodName());
+        System.out.println(" [getCalleeMethodName()] = " + jp.getCalleeMethodName());*/
         //System.out.println(" getTargetObject().toString() = " + jp.getTargetObject().toString());
-
-
         final Object result = jp.proceed();
     }
 }

@@ -1,6 +1,6 @@
 package org.oslo.metrics.sequence;
 
-import org.oslo.server.metric.Metric;
+import org.oslo.server.prevayler.datamodel.metric.Metric;
 import org.oslo.plugins.sequence.SequencePlugin;
 
 /**
@@ -11,27 +11,49 @@ import org.oslo.plugins.sequence.SequencePlugin;
  * To change this template use Options | File Templates.
  */
 public class SequenceMetric extends Metric {
-    private String targetClass;
-    private String targetMethodName;
+    private String callerClass;
+    private String callerMethod;
+    private String calleeClass;
+    private String calleeMethod;
 
-    public SequenceMetric(String targetClass, String targetMethodName) {
-        this.targetClass = targetClass;
-        this.targetMethodName = targetMethodName;
+    public SequenceMetric(String key, String callerClass, String callerMethod, String calleeClass, String calleeMethod) {
+        super(key);
+
+        this.callerClass = callerClass;
+        this.callerMethod = callerMethod;
+        this.calleeClass = calleeClass;
+        this.calleeMethod = calleeMethod;
     }
 
-    public String getTargetClass() {
-        return targetClass;
+    public String getCallerClass() {
+        return callerClass;
     }
 
-    public void setTargetClass(String targetClass) {
-        this.targetClass = targetClass;
+    public void setCallerClass(String callerClass) {
+        this.callerClass = callerClass;
     }
 
-    public String getTargetMethodName() {
-        return targetMethodName;
+    public String getCallerMethod() {
+        return callerMethod;
     }
 
-    public void setTargetMethodName(String targetMethodName) {
-        this.targetMethodName = targetMethodName;
+    public void setCallerMethod(String callerMethod) {
+        this.callerMethod = callerMethod;
+    }
+
+    public String getCalleeClass() {
+        return calleeClass;
+    }
+
+    public void setCalleeClass(String calleeClass) {
+        this.calleeClass = calleeClass;
+    }
+
+    public String getCalleeMethod() {
+        return calleeMethod;
+    }
+
+    public void setCalleeMethod(String calleeMethod) {
+        this.calleeMethod = calleeMethod;
     }
 }

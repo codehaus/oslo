@@ -2,7 +2,9 @@ package org.oslo.server;
 
 import junit.framework.TestCase;
 import org.oslo.metrics.sequence.SequenceMetric;
-import org.oslo.server.metric.Metric;
+import org.oslo.server.prevayler.datamodel.metric.Metric;
+
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,5 +23,18 @@ public class MetricProcesserTest extends TestCase {
         assertNotNull(metric);
 
         assertTrue(metric instanceof SequenceMetric);
+    }
+
+    public void testParseMetrics() throws Exception {
+        MetricProcesser metricProcesser = MetricProcesser.getInstance();
+        assertNotNull(metricProcesser);
+
+        String metricString = "1055109541319 [Sequence] org.oslo.sample.SampleMain doSomething org.oslo.sample.SampleLevel1 doSomethingLevel1[/Sequence] 1055109541319 [Sequence] org.oslo.sample.SampleLevel1 doSomethingLevel1 org.oslo.sample.SampleLevel2 doSomethingLevel2nr1[/Sequence] 1055109541319 [Sequence] org.oslo.sample.SampleLevel1 doSomethingLevel1 org.oslo.sample.SampleLevel2 doSomethingLevel2nr2[/Sequence] 1055109541319 [Sequence] org.oslo.sample.SampleMain doSomething org.oslo.sample.SampleLevel1 doSomethingLevel2_nr2[/Sequence]";
+
+        ArrayList metrics = metricProcesser.parseMetrics(metricString);
+        assertEquals("1055109541319 [Sequence] org.oslo.sample.SampleMain doSomething org.oslo.sample.SampleLevel1 doSomethingLevel1[/Sequence]", (String)metrics.get(0));
+        assertEquals("1055109541319 [Sequence] org.oslo.sample.SampleLevel1 doSomethingLevel1 org.oslo.sample.SampleLevel2 doSomethingLevel2nr1[/Sequence]", (String)metrics.get(1));
+        assertEquals("1055109541319 [Sequence] org.oslo.sample.SampleLevel1 doSomethingLevel1 org.oslo.sample.SampleLevel2 doSomethingLevel2nr2[/Sequence]", (String)metrics.get(2));
+        assertEquals("1055109541319 [Sequence] org.oslo.sample.SampleMain doSomething org.oslo.sample.SampleLevel1 doSomethingLevel2_nr2[/Sequence]", (String)metrics.get(3));
     }
 }

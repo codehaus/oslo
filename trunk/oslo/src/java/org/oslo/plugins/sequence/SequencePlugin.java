@@ -1,7 +1,7 @@
 package org.oslo.plugins.sequence;
 
 import org.oslo.server.plugin.Plugin;
-import org.oslo.server.metric.Metric;
+import org.oslo.server.prevayler.datamodel.metric.Metric;
 import org.oslo.metrics.sequence.SequenceMetric;
 
 import java.util.StringTokenizer;
@@ -38,11 +38,13 @@ public class SequencePlugin implements Plugin {
         StringTokenizer tokenizer = new StringTokenizer(dataString, " ");
 
         // Ok get all the data we need, we know how many elements there are
-        String targetClass = tokenizer.nextToken();
-        String targetMethodName = tokenizer.nextToken();
+        String callerClass = tokenizer.nextToken();
+        String callerMethod = tokenizer.nextToken();
+        String calleeClass = tokenizer.nextToken();
+        String calleeMethod = tokenizer.nextToken();
 
         // Ok we need to construct a Metric object
-        SequenceMetric sequenceMetric =  new SequenceMetric(targetClass, targetMethodName);
+        SequenceMetric sequenceMetric =  new SequenceMetric(Long.toString(System.currentTimeMillis()), callerClass, callerMethod, calleeClass, calleeMethod);
         // Add the process Id number so that we can have a link between all objects for a session
         sequenceMetric.setProcessId(processId);
         return sequenceMetric;
@@ -63,7 +65,7 @@ public class SequencePlugin implements Plugin {
 
     public String createMetricString(Metric metric) throws Exception {
         SequenceMetric sequenceMetric = (SequenceMetric)metric;
-        return sequenceMetric.getProcessId() + " [Sequence] " + sequenceMetric.getTargetClass() + " " + sequenceMetric.getTargetMethodName() + "[/Sequence]";
+        return sequenceMetric.getProcessId() + " [Sequence] " + sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod() + " " + sequenceMetric.getCalleeClass() + " " + sequenceMetric.getCalleeMethod() + "[/Sequence]";
     }
 
     public String getProcessId() {

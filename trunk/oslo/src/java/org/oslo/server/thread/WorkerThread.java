@@ -2,20 +2,21 @@ package org.oslo.server.thread;
 
 import org.oslo.server.prevayler.persistance.PrevaylerPersister;
 import org.oslo.server.prevayler.system.RantSystem;
-import org.oslo.server.prevayler.transaction.PerformanceMetricCreateTransaction;
-import org.oslo.server.infounits.PerformanceMetric;
 import org.oslo.server.MetricProcesser;
-import org.oslo.server.metric.Metric;
+import org.oslo.server.prevayler.datamodel.metric.Metric;
 import org.prevayler.Prevayler;
+import org.oslo.server.prevayler.datamodel.process.Process;
+import org.oslo.server.prevayler.datamodel.group.MetricGroup;
+import org.oslo.server.prevayler.transaction.process.ProcessCreateTransaction;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A worker thread class which can drain channels and echo-back
@@ -145,7 +146,45 @@ public class WorkerThread extends Thread {
             MetricProcesser metricProcesser = MetricProcesser.getInstance();
 
             try {
-                Metric metric = metricProcesser.processMetric(new String(bytes));
+                ArrayList metrics = metricProcesser.parseMetrics(new String(bytes));
+                Iterator metricsIterator = metrics.iterator();
+
+                while (metricsIterator.hasNext()) {
+                    String metricString = (String)metricsIterator.next();
+                    Metric metric = metricProcesser.processMetric(metricString);
+
+                    // Ok we now have a metric. We need to add this to the datastore
+                    // The datastore is based on a processID with attached groups
+                    // for each Metric type
+                    // ID -- Metric type 1
+                    //         -- Measurement 1
+                    //         -- Measurement 2
+                    PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
+                    Prevayler prevayler = prevaylerPersister.getPrevayler();
+                    RantSystem rantSystem = (RantSystem) prevayler.prevalentSystem();
+
+                    Process process = rantSystem.getProcess(metric.getProcessId());
+
+                    if (process == null) {
+                        ProcessCreateTransaction processCreateTransaction = new ProcessCreateTransaction(metric.getProcessId());
+                        process = (Process) processCreateTransaction.executeUsing(prevayler);
+
+                        // Ok add the data we need to the process in question
+                        process.addMetricGroup(new MetricGroup(metric.getPluginName()));
+                        MetricGroup metricGroup = process.getMetricGroup(metric.getPluginName());
+                        metricGroup.addMetric(metric);
+                    } else {
+                        MetricGroup metricGroup = process.getMetricGroup(metric.getPluginName());
+
+                        if (metricGroup == null) {
+                            metricGroup = process.addMetricGroup(new MetricGroup(metric.getPluginName()));
+                        }
+
+                        metricGroup.addMetric(metric);
+                    }
+
+                    System.out.println("[LOGGING] Metric:" + metric.getKey() + " Original: " + metricString);
+                }
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use Options | File Templates.
             }

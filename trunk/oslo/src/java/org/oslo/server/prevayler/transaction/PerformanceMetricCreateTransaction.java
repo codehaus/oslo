@@ -11,7 +11,7 @@ import org.oslo.server.prevayler.system.RantSystem;
  * Time: 11:55:24 PM
  * To change this template use Options | File Templates.
  */
-public class PerformanceMetricCreateTransaction extends TransactionWithQuery {
+public class PerformanceMetricCreateTransaction { //extends TransactionWithQuery {
     private int _id;
     private String _className;
     private String _methodeName;
@@ -30,7 +30,7 @@ public class PerformanceMetricCreateTransaction extends TransactionWithQuery {
         this._outTimeMSec = _outTimeMSec;
     }
 
-    protected Object executeAndQuery(Object system) throws Exception {
+/*    protected Object executeAndQuery(Object system) throws Exception {
         PerformanceMetric performanceMetric = null;
         RantSystem rantSystem = (RantSystem)system;
 
@@ -42,5 +42,5 @@ public class PerformanceMetricCreateTransaction extends TransactionWithQuery {
         rantSystem.addPerformanceMetric(performanceMetric);
 
         return performanceMetric;
-    }
+    }*/
 }

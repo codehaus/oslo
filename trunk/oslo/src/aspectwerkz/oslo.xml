@@ -29,9 +29,9 @@
             <advice-ref name="callersidesequence"/>
         </pointcut>
 
-        <pointcut type="method" pattern="* *(..)">
+        <!--<pointcut type="method" pattern="* *(..)">
             <advice-ref name="sequence"/>
-        </pointcut>
+        </pointcut>-->
 
         <introduction-ref name="processid"/>
 

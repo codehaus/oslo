@@ -1,6 +1,6 @@
 package org.oslo.server.infounits;
 
-import org.oslo.server.metric.Metric;
+import org.oslo.server.prevayler.datamodel.metric.Metric;
 
 import java.util.Date;
 import java.io.Serializable;
@@ -22,6 +22,8 @@ public class PerformanceMetric extends Metric implements Serializable {
     private long outTimeMSec;
 
     public PerformanceMetric(int id, String className, String methodeName, String ip, long measurementDateMSec, long innTimeMSec, long outTimeMSec) {
+        super(Integer.toString(id));
+
         this.id = id;
         this.className = className;
         this.methodeName = methodeName;

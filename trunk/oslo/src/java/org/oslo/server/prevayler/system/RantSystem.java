@@ -2,11 +2,10 @@ package org.oslo.server.prevayler.system;
 
 import org.prevayler.util.clock.ClockedSystem;
 import org.prevayler.util.clock.Clock;
-import org.oslo.server.infounits.PerformanceMetric;
 
 import java.util.HashMap;
 import java.util.Date;
-import java.util.Map;
+import org.oslo.server.prevayler.datamodel.process.Process;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,8 +18,10 @@ public class RantSystem implements ClockedSystem {
 
     private final HashMap performanceMetrics = new HashMap();
     private final HashMap byClass = new HashMap();
+    private final HashMap processes = new HashMap();
+    private static long processId = 0;
 
-    public PerformanceMetric getPerformanceMetric(int id) {
+/*    public PerformanceMetric getPerformanceMetric(int id) {
         return (PerformanceMetric) performanceMetrics.get(new Integer(id));
     }
 
@@ -37,10 +38,43 @@ public class RantSystem implements ClockedSystem {
 
     public int nextPerformanceMetricId() {
         return performanceMetrics.size();
+    }*/
+
+
+    public void advanceClockTo(Date date) {
+    }
+
+    public Clock clock() {
+        return null;
+    }
+
+    /**
+     * Process related issues
+     */
+    public void addProcess(Process process) throws Exception {
+        processes.put(process.getProcessID(), process);
+    }
+
+    public synchronized String nextProcessId() {
+        return Long.toString(processId++);
+    }
+
+    public Process getProcess(String processId) {
+        return (Process)processes.get(processId);
+    }
+
+    /**
+     * Methods for checking consistence of data in the prevayler system
+     */
+    public boolean checkCreateProcess(String processId) {
+        if(!processes.containsKey(processId))
+            return true;
+
+        return false;
     }
 
     // Ensure the integrity of data being stored
-    public boolean checkCreatePerformanceMetric(int id, String className, String methodeName, String ip, long measurementDateMSec, long innTimeMSec, long outTimeMSec) {
+    /**public boolean checkCreatePerformanceMetric(int id, String className, String methodeName, String ip, long measurementDateMSec, long innTimeMSec, long outTimeMSec) {
         if (className == null || className.trim().equals(""))
             return false;
 
@@ -54,12 +88,5 @@ public class RantSystem implements ClockedSystem {
             return false;
 
         return true;
-    }
-
-    public void advanceClockTo(Date date) {
-    }
-
-    public Clock clock() {
-        return null;
-    }
+    }  **/
 }

@@ -7,7 +7,7 @@
  */
 package org.oslo.producer;
 
-import org.oslo.server.metric.Metric;
+import org.oslo.server.prevayler.datamodel.metric.Metric;
 import org.oslo.server.plugin.Plugin;
 import java.io.*;
 import java.net.Socket;
@@ -108,40 +108,6 @@ public class MetricLogger {
         bufferedOutputStream.write(fixedString.getBytes());
         bufferedOutputStream.flush();
     }
-
-    /*public void logJointPointEntry(MethodJoinPoint methodJoinPoint) {
-        String outString = "--> " + methodJoinPoint.getTargetClass().getName() + "::" + methodJoinPoint.getMethodName() + "\n";
-        //System.out.println(outString);
-
-        // Get full class name
-        String className = methodJoinPoint.getTargetClass().getName();
-        outString = "(" + className.substring(className.lastIndexOf(".") + 1) + " " + methodJoinPoint.getMethodName() + "\n";
-
-        try {
-            bufferedOutputStream.write(outString.getBytes());
-            bufferedOutputStream.flush();
-            //outSequence.write(outString.getBytes());
-            //outSequence.flush();
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
-        }
-    }
-
-    public void logJointPointExit(MethodJoinPoint methodJoinPoint) {
-        String outString = "<-- " + methodJoinPoint.getTargetClass().getName() + "::" + methodJoinPoint.getMethodName() + "\n";
-        //System.out.println(outString);
-
-        outString = ")";
-
-        try {
-            bufferedOutputStream.write(outString.getBytes());
-            bufferedOutputStream.flush();
-            //outSequence.write(outString.getBytes());
-            //outSequence.flush();
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
-        }
-    } */
 
     public void finalize() {
         try {
