@@ -7,6 +7,7 @@ import org.oslo.common.datamodel.metric.Metric;
 import org.oslo.common.prevayler.system.RantSystem;
 import org.oslo.common.prevayler.persistance.PrevaylerPersister;
 import org.oslo.plugins.sequenceplugin.metric.SequenceMetric;
+import org.oslo.plugins.sequenceplugin.plugin.SequencePlugin;
 import org.prevayler.Prevayler;
 
 import java.util.*;
@@ -169,7 +170,7 @@ public class SequenceConsoleCommands implements CommandLineInterpreter {
             Process process = rantSystem.getProcess(processId);
 
             // Ok got the process, now check for processes that are not called by anyone
-            MetricGroup metricGroup = (MetricGroup) process.getMetricGroup(this.getClass().getName());
+            MetricGroup metricGroup = (MetricGroup) process.getMetricGroup(SequencePlugin.class.getName());
 
             if (metricGroup != null) {
                 // Ok now create a list of metrics that do not have a caller
@@ -216,7 +217,7 @@ public class SequenceConsoleCommands implements CommandLineInterpreter {
         ArrayList allNodes = new ArrayList();
 
         // Get the metric group for this plugin
-        MetricGroup metricgroup = (MetricGroup) process.getMetricGroup(this.getClass().getName());
+        MetricGroup metricgroup = (MetricGroup) process.getMetricGroup(SequencePlugin.class.getName());
 
         if (metricgroup == null)
             throw new InvalidParameterException("No metric groups found");
