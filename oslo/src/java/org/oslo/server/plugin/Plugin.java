@@ -1,6 +1,6 @@
 package org.oslo.server.plugin;
 
-import org.oslo.server.metric.Metric;
+import org.oslo.server.prevayler.datamodel.metric.Metric;
 
 /**
  * Created by IntelliJ IDEA.

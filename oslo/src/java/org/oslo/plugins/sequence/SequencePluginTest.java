@@ -13,13 +13,15 @@ import org.oslo.metrics.sequence.SequenceMetric;
 public class SequencePluginTest extends TestCase {
     public void testParseMetricString() throws Exception {
         SequencePlugin sequencePlugin = new SequencePlugin();
-        SequenceMetric sequenceMetric = (SequenceMetric)sequencePlugin.parseMetricString("1234567 [Sequence] fromMethod fromClass toMethod toClass [/Sequence]");
+        SequenceMetric sequenceMetric = (SequenceMetric)sequencePlugin.parseMetricString("1234567 [Sequence] toClass toMethod fromClass fromMethod [/Sequence]");
 
         assertNotNull(sequenceMetric);
 
         // Validate that the information is correct
-        assertEquals("targetClass", sequenceMetric.getTargetClass());
-        assertEquals("targetMethodName", sequenceMetric.getTargetMethodName());
+        assertEquals("toClass", sequenceMetric.getCallerClass());
+        assertEquals("toMethod", sequenceMetric.getCallerMethod());
+        assertEquals("fromClass", sequenceMetric.getCalleeClass());
+        assertEquals("fromMethod", sequenceMetric.getCalleeMethod());
         assertEquals("1234567", sequenceMetric.getProcessId());
     }
 
