@@ -4,10 +4,10 @@ import junit.framework.TestCase;
 import org.prevayler.Prevayler;
 import org.oslo.common.datamodel.process.Process;
 import org.oslo.common.datamodel.group.MetricGroup;
-import org.oslo.rantserver.prevayler.persistance.PrevaylerPersister;
-import org.oslo.rantserver.prevayler.transaction.process.ProcessCreateTransaction;
-import org.oslo.rantserver.prevayler.transaction.process.ProcessRemoveTransaction;
-import org.oslo.rantserver.prevayler.system.RantSystem;
+import org.oslo.common.prevayler.persistance.PrevaylerPersister;
+import org.oslo.common.prevayler.transaction.process.ProcessCreateTransaction;
+import org.oslo.common.prevayler.transaction.process.ProcessRemoveTransaction;
+import org.oslo.common.prevayler.system.RantSystem;
 import org.oslo.plugins.sequenceplugin.metric.SequenceMetric;
 
 import java.util.Iterator;
