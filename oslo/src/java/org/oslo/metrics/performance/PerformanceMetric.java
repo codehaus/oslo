@@ -13,7 +13,6 @@ import java.io.Serializable;
  * To change this template use Options | File Templates.
  */
 public class PerformanceMetric extends Metric implements Serializable {
-    private int id;
     private String className;
     private String methodeName;
     private String ip;
@@ -21,24 +20,14 @@ public class PerformanceMetric extends Metric implements Serializable {
     private long innTimeMSec;
     private long outTimeMSec;
 
-    public PerformanceMetric(int id, String className, String methodeName, String ip, long measurementDateMSec, long innTimeMSec, long outTimeMSec) {
-        super(Integer.toString(id));
-
-        this.id = id;
+   public PerformanceMetric(String key, String className, String methodeName, String ip, long measurementDateMSec, long innTimeMSec, long outTimeMSec) {
+        super(key);
         this.className = className;
         this.methodeName = methodeName;
         this.ip = ip;
         this.measurementDateMSec = measurementDateMSec;
         this.innTimeMSec = innTimeMSec;
         this.outTimeMSec = outTimeMSec;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public long getMeasurementDateMSec() {

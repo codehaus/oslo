@@ -5,6 +5,7 @@ import org.oslo.server.prevayler.persistance.PrevaylerPersister;
 import org.oslo.server.prevayler.system.RantSystem;
 import org.prevayler.Prevayler;
 import org.oslo.server.prevayler.datamodel.process.Process;
+import org.oslo.server.prevayler.datamodel.group.MetricGroup;
 
 import java.util.StringTokenizer;
 import java.util.Iterator;
@@ -50,7 +51,29 @@ public class BaseConsoleCommands implements CommandLineInterpreter {
     }
 
     private String executeListProcess(StringTokenizer tokenizer) {
-        return null;
+        String processId = tokenizer.nextToken();
+
+        PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
+        Prevayler prevayler = prevaylerPersister.getPrevayler();
+        RantSystem rantSystem = (RantSystem) prevayler.prevalentSystem();
+
+        // Get all the available processes
+        Process process = rantSystem.getProcess(processId);
+
+        // Check if the process is there
+        if(process == null)
+            return "Could not find the process with processId = " + processId;
+
+        // Ok get all the metric groups and present them
+        Iterator iterator = process.getMetricGroups().values().iterator();
+        String metricString = " ";
+
+        while (iterator.hasNext()) {
+            MetricGroup metricGroup = (MetricGroup) iterator.next();
+            metricString += "\t" + metricGroup.getPluginName() + "\n";
+        }
+
+        return metricString;
     }
 
     private String executeListProcesses(StringTokenizer tokenizer) {

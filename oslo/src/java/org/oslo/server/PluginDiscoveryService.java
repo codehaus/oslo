@@ -26,7 +26,7 @@ public class PluginDiscoveryService {
      */
     public static ArrayList discoverPlugins() throws IOException, ClassNotFoundException {
         // Find java home, adjust for MAC OSX
-        String javaHome = System.getProperty("java.home");
+        /*String javaHome = System.getProperty("java.home");
 
         if (System.getProperty("os.name").toUpperCase().equals("MAC OS X")) {
             javaHome = javaHome.substring(0, javaHome.lastIndexOf("/"));
@@ -85,7 +85,10 @@ public class PluginDiscoveryService {
                 }
                 System.out.println(classpathElement);
             }
-        }
+        }  */
+        ArrayList plugins = new ArrayList();
+        plugins.add("org.oslo.plugins.performance.PerformancePlugin");
+        plugins.add("org.oslo.plugins.sequence.SequencePlugin");
 
         return plugins;
     }
@@ -99,7 +102,7 @@ public class PluginDiscoveryService {
      */
     private static ArrayList validateEntry(String elementName, ArrayList plugins) throws ClassNotFoundException {
         // Replace seperator, so that it is correct according to the classloading standard
-        elementName = elementName.replace(File.separatorChar, '.');
+        /*elementName = elementName.replace(File.separatorChar, '.');
 
         // Check if this is in fact a class
         if (elementName.lastIndexOf(".class") != -1 && (elementName.indexOf("sun.") != 0 && elementName.indexOf("java.") != 0) && elementName.indexOf("javax.") != 0) {
@@ -122,7 +125,7 @@ public class PluginDiscoveryService {
                 // Ignore faults...
                 //e.printStackTrace();  //To change body of catch statement use Options | File Templates.
             }
-        }
+        } */
 
         return plugins;
     }
@@ -136,7 +139,7 @@ public class PluginDiscoveryService {
      * @return
      * @throws IOException
      */
-    public static ArrayList getDirectoryFiles(String root, ArrayList files, File file) throws IOException {
+    /*public static ArrayList getDirectoryFiles(String root, ArrayList files, File file) throws IOException {
 
         if (file.isDirectory()) {
             // Traverse the directory
@@ -156,5 +159,5 @@ public class PluginDiscoveryService {
         }
 
         return files;
-    }
+    } */
 }

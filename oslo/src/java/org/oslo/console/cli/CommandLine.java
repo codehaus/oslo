@@ -3,10 +3,6 @@ package org.oslo.console.cli;
 import org.oslo.server.prevayler.persistance.PrevaylerPersister;
 import org.oslo.server.prevayler.system.RantSystem;
 import org.prevayler.Prevayler;
-import org.oslo.server.prevayler.datamodel.process.Process;
-import org.oslo.server.prevayler.datamodel.group.MetricGroup;
-import org.oslo.server.prevayler.datamodel.metric.Metric;
-import org.oslo.metrics.sequence.SequenceMetric;
 import org.oslo.plugins.sequence.SequencePlugin;
 import org.oslo.console.cli.base.BaseConsoleCommands;
 import org.oslo.console.CommandLineInterpreter;
@@ -128,102 +124,4 @@ public class CommandLine {
             commandLinePluginCommands.put(command, interpreter);
         }
     }
-
-    /*public void ShowAllProcessesFull() {
-        BufferedOutputStream bufferedOutputStream = null;
-        Hashtable hashtable = new Hashtable();
-        SequenceMetric startmetric = null;
-
-        try {
-            bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("sequence_server.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
-        }
-
-        PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
-        Prevayler prevayler = prevaylerPersister.getPrevayler();
-        RantSystem rantSystem = (RantSystem) prevayler.prevalentSystem();
-
-        Iterator processes = rantSystem.getProcesses();
-        //Collection metrics = null;
-        ArrayList allNodes = new ArrayList();
-
-        while (processes.hasNext()) {
-            Process process = (Process) processes.next();
-
-            // Ok write process info
-            System.out.println("------------------------------------------------------------------------------------------");
-            System.out.println("Process : " + process.getProcessID());
-
-            // Write metric groups out
-            Iterator metricgroups = process.getMetricGroups().values().iterator();
-            //metrics = process.getMetricGroups().values();
-
-            while (metricgroups.hasNext()) {
-                MetricGroup metricgroup = (MetricGroup) metricgroups.next();
-
-                // Write metric group info
-                System.out.println("Metricgroup : " + metricgroup.getPluginName() + " description " + metricgroup.getDescription());
-
-                Iterator metrics = metricgroup.getMetrics().values().iterator();
-                boolean first = true;
-
-                while (metrics.hasNext()) {
-                    Metric metric = (Metric) metrics.next();
-
-                    // Ok write the metric out
-                    if (metric instanceof SequenceMetric) {
-                        SequenceMetric sequenceMetric = (SequenceMetric) metric;
-                        System.out.println("SequenceMetric : " + sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod() + " " + sequenceMetric.getCalleeClass() + " " + sequenceMetric.getCalleeMethod());
-
-                        // Find start method
-                        if (sequenceMetric.getCallerMethod().equals("main"))
-                            startmetric = sequenceMetric;
-
-                        allNodes.add(sequenceMetric);
-
-                        if (hashtable.containsKey(sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod())) {
-                            ((Hashtable) hashtable.get(sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod())).put(sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod(), sequenceMetric);
-                        } else {
-                            Hashtable newSequenceHashtable = new Hashtable();
-                            newSequenceHashtable.put(sequenceMetric.getCalleeClass() + " " + sequenceMetric.getCalleeMethod(), sequenceMetric);
-                            hashtable.put(sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod(), newSequenceHashtable);
-                        }
-                    }
-                }
-            }
-
-            System.out.println("------------------------------------------------------------------------------------------");
-        }
-
-        String finalString = generateSequenceString(startmetric, allNodes);
-        System.out.println(finalString);
-    } */
-
-/*    public String generateSequenceString(SequenceMetric sequenceMetric, ArrayList allNodes) {
-        return "(" + sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod() + traverseAllNodes(sequenceMetric, allNodes, "\t");
-    }
-
-    public String traverseAllNodes(SequenceMetric sequenceMetric, ArrayList allNodes, String tabs) {
-        Iterator nodesIterator = allNodes.iterator();
-        String returnString = "";
-
-        while (nodesIterator.hasNext()) {
-            SequenceMetric choosenSequenceMetric = (SequenceMetric) nodesIterator.next();
-
-            if (choosenSequenceMetric.getCallerClass().equals(sequenceMetric.getCalleeClass()) && choosenSequenceMetric.getCallerMethod().equals(sequenceMetric.getCalleeMethod())) {
-                returnString += traverseAllNodes(choosenSequenceMetric, allNodes, tabs + "\t");
-            }
-        }
-
-        String addString = returnString;*/
-
-    /*if("".equals(returnString))
-        addString = ")\n";
-    else
-        addString = tabs + returnString + "\n)";*/
-
-    //return sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod() + " " + sequenceMetric.getCalleeClass() + " " + sequenceMetric.getCalleeMethod() + "\n" + returnString;
-//        return "\n" + tabs + "(" + sequenceMetric.getCalleeClass() + " " + sequenceMetric.getCalleeMethod() + addString + ")";
-//   }
 }
