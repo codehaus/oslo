@@ -10,11 +10,22 @@ import org.prevayler.Prevayler;
 import org.oslo.server.prevayler.datamodel.process.Process;
 import org.oslo.server.prevayler.datamodel.group.MetricGroup;
 
-import java.util.StringTokenizer;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.ArrayList;
+import java.util.*;
 import java.security.InvalidParameterException;
+import java.io.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+import com.zanthan.sequence.headless.PngCreator;
+import com.zanthan.sequence.swing.display.SwingPainter;
+import com.zanthan.sequence.swing.display.SwingStringMeasure;
+import com.zanthan.sequence.preferences.Prefs;
+import com.zanthan.sequence.layout.LayoutData;
+import com.zanthan.sequence.diagram.Diagram;
+import com.zanthan.sequence.diagram.NodeFactoryImpl;
+import com.zanthan.sequence.parser.SimpleParserImpl;
+
+import javax.imageio.ImageIO;
 
 /**
  * Created by IntelliJ IDEA.
@@ -110,16 +121,18 @@ public class SequencePlugin implements Plugin, CommandLineInterpreter {
      * Command line interface
      */
     public String[] getCommandHelp() {
-        String helpStrings[] = new String[2];
+        String helpStrings[] = new String[3];
         helpStrings[0] = "GENERATESEQUENCEDIAGRAM <processID> <startingClass> <startingMentho> \n\t Generates a sequence diagram from the specified starting point";
         helpStrings[1] = "FINDSEQUENCESTARTMETHODS <processID> \n\t Finds all methods that are enterypoints to a recorded sequence";
+        helpStrings[2] = "GENERATEALLSEQUENCEDIAGRAMS <processID> <Output Directory>\n\t Generates sequence jpegs of all available entry points in the given process";
         return helpStrings;
     }
 
     public String[] getCommands() {
-        String commands[] = new String[2];
+        String commands[] = new String[3];
         commands[0] = "GENERATESEQUENCEDIAGRAM";
         commands[1] = "FINDSEQUENCESTARTMETHODS";
+        commands[2] = "GENERATEALLSEQUENCEDIAGRAMS";
         return commands;
     }
 
@@ -133,9 +146,46 @@ public class SequencePlugin implements Plugin, CommandLineInterpreter {
             return executeGenerateSequenceDiagram(tokenizer);
         } else if ("FINDSEQUENCESTARTMETHODS".equals(commandToken.toUpperCase())) {
             return executeFindSequenceStartMethods(tokenizer);
+        } else if ("GENERATEALLSEQUENCEDIAGRAMS".equals(commandToken.toUpperCase())) {
+            return executeGenerateAllSequenceDiagrams(tokenizer);
         } else {
             return null;
         }
+    }
+
+    private String executeGenerateAllSequenceDiagrams(StringTokenizer command) throws Exception {
+        // Ok get the commands expected
+        String processId = command.nextToken();
+        String outputdirectory = command.nextToken();
+        StringBuffer sequenceInformation = new StringBuffer();
+
+        // Ok check if the output directory exits
+        File directory = new File(outputdirectory);
+
+        // Check if the directory exists and if it is in fact a directory
+        if (!directory.exists() || !directory.isDirectory())
+            throw new Exception("Directory specified does not exist");
+
+        // Ok, now get all the starting points
+        ArrayList entryPoints = findEntryPoints((RantSystem) PrevaylerPersister.getInstance().getPrevayler().prevalentSystem(), processId);
+        Iterator entryIterator = entryPoints.iterator();
+
+        ArrayList sequences = generateSequenceStructure(processId);
+
+        // Iterate over the collected metrics
+        while (entryIterator.hasNext()) {
+            SequenceMetric sequenceMetric = (SequenceMetric) entryIterator.next();
+
+            // Ok for each metric generate a graphics file in the specified catalog
+            String sequenceString = this.generateSequenceString(sequenceMetric, sequences);
+
+            sequenceInformation.append("\t Generating PNG for entry Point: " + sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod() + "\n");
+
+            // Ok generate the file
+            this.generateSequenceDiagramPNG(outputdirectory + "/" + processId + "-" + sequenceMetric.getCallerClass() + "-" + sequenceMetric.getCallerMethod() + ".png", sequenceString);
+        }
+
+        return sequenceInformation.toString();
     }
 
     public String executeGenerateSequenceDiagram(StringTokenizer command) throws Exception {
@@ -170,7 +220,71 @@ public class SequencePlugin implements Plugin, CommandLineInterpreter {
     }
 
     public String executeFindSequenceStartMethods(StringTokenizer command) throws Exception {
-        return null;
+        PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
+        Prevayler prevayler = prevaylerPersister.getPrevayler();
+        RantSystem rantSystem = (RantSystem) prevayler.prevalentSystem();
+
+        // Get the process id number
+        String processId = command.nextToken();
+
+        ArrayList topPoints = findEntryPoints(rantSystem, processId);
+
+        Iterator topPointsIterator = topPoints.iterator();
+        String metricsString = "Found the following application entry points\n";
+
+        while (topPointsIterator.hasNext()) {
+            SequenceMetric sequenceMetric = (SequenceMetric) topPointsIterator.next();
+            metricsString += "\t" + sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod() + "\n";
+        }
+
+        return metricsString;
+    }
+
+    /**
+     * Finds the entry points for a process, example might be the main method or
+     * a method on a EJB bean
+     * @param rantSystem
+     * @param processId
+     * @return
+     */
+    private ArrayList findEntryPoints(RantSystem rantSystem, String processId) {
+        ArrayList topPoints = new ArrayList();
+
+        if (rantSystem.getProcess(processId) != null) {
+            Process process = rantSystem.getProcess(processId);
+
+            // Ok got the process, now check for processes that are not called by anyone
+            MetricGroup metricGroup = (MetricGroup) process.getMetricGroup(this.getClass().getName());
+
+            if (metricGroup != null) {
+                // Ok now create a list of metrics that do not have a caller
+                HashMap metrics = metricGroup.getMetrics();
+                Iterator iterator = metrics.values().iterator();
+
+                while (iterator.hasNext()) {
+                    SequenceMetric sequenceMetric = (SequenceMetric) iterator.next();
+
+                    // Establish if this sequence metric has any parents
+                    Iterator allSequenceMetrics = metrics.values().iterator();
+                    boolean hasParent = false;
+
+                    while (allSequenceMetrics.hasNext()) {
+                        SequenceMetric sequenceMetricElement = (SequenceMetric) allSequenceMetrics.next();
+
+                        // Ok, if this has a parent, signal and break the loop
+                        if (sequenceMetric.getCallerClass().equals(sequenceMetricElement.getCalleeClass()) && sequenceMetric.getCallerMethod().equals(sequenceMetricElement.getCalleeMethod())) {
+                            hasParent = true;
+                            break;
+                        }
+                    }
+
+                    if (hasParent == false)
+                        topPoints.add(sequenceMetric);
+                }
+            }
+        }
+
+        return topPoints;
     }
 
     private ArrayList generateSequenceStructure(String processId) throws Exception {
@@ -192,18 +306,13 @@ public class SequencePlugin implements Plugin, CommandLineInterpreter {
         if (metricgroup == null)
             throw new InvalidParameterException("No metric groups found");
 
-        // Write metric group info
-//        System.out.println("Metricgroup : " + metricgroup.getPluginName() + " description " + metricgroup.getDescription());
-
         Iterator metrics = metricgroup.getMetrics().values().iterator();
-        boolean first = true;
 
         while (metrics.hasNext()) {
             Metric metric = (Metric) metrics.next();
 
             // Ok write the metric out
             SequenceMetric sequenceMetric = (SequenceMetric) metric;
-//            System.out.println("SequenceMetric : " + sequenceMetric.getCallerClass() + " " + sequenceMetric.getCallerMethod() + " " + sequenceMetric.getCalleeClass() + " " + sequenceMetric.getCalleeMethod());
             allNodes.add(sequenceMetric);
         }
 
@@ -250,9 +359,87 @@ public class SequencePlugin implements Plugin, CommandLineInterpreter {
         }
 
         // Adjust for the case without parameters
-        if(parameters.size() == 0)
+        if (parameters.size() ==
+                0)
             classString += " ";
 
         return classString.substring(0, classString.length() - 1) + "> " + "\"" + sequenceMetric.getReturnType() + "\" " + addString + ")";
     }
+
+
+/*    public static void main(String[] args) throws Exception {
+        new SequencePlugin().output();
+    }*/
+
+    /*public void output() throws IOException {
+        outputPng(layoutDiagram(createDiagram()));
+    } */
+
+    private void generateSequenceDiagramPNG(String outputFile, String sequenceString) throws Exception {
+        // Create the diagram
+        Diagram diagram = new Diagram(new SimpleParserImpl(), new NodeFactoryImpl());
+        diagram.parse(sequenceString);
+
+        // Layout the diagram
+        BufferedImage bi = new BufferedImage(10, 10, 2);
+        Graphics2D graphics = bi.createGraphics();
+        com.zanthan.sequence.layout.StringMeasure sm = new SwingStringMeasure(graphics);
+        LayoutData layoutData = new LayoutData(sm);
+        diagram.layout(layoutData);
+
+        // Write the png file to disk
+        int height = layoutData.getHeight();
+        int width = layoutData.getWidth();
+        BufferedImage png = new BufferedImage(width, height, 2);
+        Graphics2D pngGraphics = png.createGraphics();
+        pngGraphics.setClip(0, 0, width, height);
+        Map hintsMap = new HashMap();
+
+        hintsMap.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        pngGraphics.addRenderingHints(hintsMap);
+        pngGraphics.setBackground(Color.white);
+        pngGraphics.setColor(Color.white);
+        pngGraphics.fillRect(0, 0, width, height);
+        SwingPainter painter = new SwingPainter();
+        painter.setGraphics(pngGraphics);
+        layoutData.paint(painter);
+        ImageIO.write(png, "png", new File(outputFile));
+    }
+
+    /*private Diagram createDiagram() throws FileNotFoundException {
+        Diagram diagram = new Diagram(new SimpleParserImpl(), new NodeFactoryImpl());
+        diagram.parse(new PushbackReader(new FileReader(inFileName)));
+        return diagram;
+    }
+
+    private LayoutData layoutDiagram(Diagram diagram) {
+        BufferedImage bi = new BufferedImage(10, 10, 2);
+        Graphics2D graphics = bi.createGraphics();
+        com.zanthan.sequence.layout.StringMeasure sm = new SwingStringMeasure(graphics);
+        LayoutData layoutData = new LayoutData(sm);
+        diagram.layout(layoutData);
+        return layoutData;
+    }
+
+    private void outputPng(LayoutData layoutData) throws IOException {
+        int height = layoutData.getHeight();
+        int width = layoutData.getWidth();
+        BufferedImage png = new BufferedImage(width, height, 2);
+        Graphics2D pngGraphics = png.createGraphics();
+        pngGraphics.setClip(0, 0, width, height);
+        Map hintsMap = new HashMap();
+
+        hintsMap.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        pngGraphics.addRenderingHints(hintsMap);
+        pngGraphics.setBackground(Color.white);
+        pngGraphics.setColor(Color.white);
+        pngGraphics.fillRect(0, 0, width, height);
+        SwingPainter painter = new SwingPainter();
+        painter.setGraphics(pngGraphics);
+        layoutData.paint(painter);
+        ImageIO.write(png, "png", new File(outFileName));
+    }
+
+    private String inFileName = "./sequence.txt";
+    private String outFileName = "./sequence.png";*/
 }
