@@ -7,7 +7,7 @@
  */
 package org.oslo.producer;
 
-import aspectwerkz.joinpoint.MethodJoinPoint;
+import org.codehaus.aspectwerkz.joinpoint.MethodJoinPoint;
 
 import java.io.*;
 import java.net.Socket;

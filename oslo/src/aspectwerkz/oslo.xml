@@ -2,10 +2,10 @@
 <aspectwerkz>
     <advice name="logging"
         advice="org.oslo.aspects.LoggingAdvice"
-        deploymentModel="perJVM"/>
+        deployment-model="perJVM"/>
 
     <aspect class="org.oslo.sample.*">
-        <pointcut type="method" pattern="do.*">
+        <pointcut type="method" pattern="* do*(..)">
             <advice-ref name="logging"/>
         </pointcut>
     </aspect>
