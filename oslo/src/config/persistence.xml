@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<persistence>
+
+    <!-- ===================================================== -->
+    <!-- index definitions                                      -->
+    <!-- ===================================================== -->
+    <index name="string_index" type="java.lang.String"/>
+
+    <!-- ===================================================== -->
+    <!-- persistence manager definition                        -->
+    <!-- ===================================================== -->
+    <persistence-manager class="aspectwerkz.extension.persistence.jisp.JispPersistenceManager" active="true">
+        <index-ref name="string_index"/>
+        <param name="databaseDir">C:/src/aspectwerkz/_jisp</param>
+        <param name="indexDir">C:/src/aspectwerkz/_jisp</param>
+        <param name="databaseName">database</param>
+    </persistence-manager>
+    <persistence-manager class="aspectwerkz.extension.persistence.prevayler.PrevaylerPersistenceManager">
+        <index-ref name="long_index"/>
+        <index-ref name="string_index"/>
+        <param name="logDir">C:/src/aspectwerkz/_txLogs</param>
+    </persistence-manager>
+    <persistence-manager class="aspectwerkz.persistence.jdbc.JdbcPersistenceManager">
+        <index-ref name="long_index"/>
+        <index-ref name="string_index"/>
+        <param name="url">jdbc://mysql:host:/myapp</param>
+        <param name="username">scott</param>
+        <param name="password">tiger</param>
+    </persistence-manager>
+
+    <!-- ===================================================== -->
+    <!-- persistent object definitions                          -->
+    <!-- ===================================================== -->
+    <persistent class="test.JispTest">
+        <index-ref name="string_index" method="getUuid"/>
+    </persistent>
+
+    <persistent class="domain.Group">
+        <index-ref name="long_index" method="getLongIndex"/>
+        <index-ref name="string_index" method="getStringIndex"/>
+    </persistent>
+
+</persistence>
+
+
