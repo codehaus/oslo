@@ -89,7 +89,7 @@ public class RantLoggingServer {
                     // Ok send a registration number (defined by the system clock) that
                     // The advices can use to ensure that we can track a specific applications
                     // metrics
-                    sendInstanceKey(channel);
+                    //sendInstanceKey(channel);
                 }
 
                 // Is there data to read on this channel?
@@ -103,7 +103,7 @@ public class RantLoggingServer {
         }
     }
 
-    private void sendInstanceKey(SocketChannel channel) throws Exception {
+    /*private void sendInstanceKey(SocketChannel channel) throws Exception {
         String idNumber = Long.toString(System.currentTimeMillis());
         System.out.println("Server ID: " + idNumber);
 
@@ -111,7 +111,7 @@ public class RantLoggingServer {
         buffer.put(idNumber.getBytes());
         buffer.flip();
         channel.write(buffer);
-    }
+    } */
 
     /**
      * Register the given channel with the given selector for
