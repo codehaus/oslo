@@ -101,18 +101,23 @@
     </goal>
 
     <goal name="oslo:execute:console">
+        <!--
+           Seems to be a problem with ant and reflection, use run-console.sh
+           to start the console
+        -->
+
         <!-- ClassPath for the sample file -->
-        <path id="execute.path">
+        <!--<path id="execute.path">
             <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
             <path refid="maven.dependency.classpath"/>
             <pathelement path="${maven.build.dir}/classes"/>
         </path>
 
         <property name="cp" refid="execute.path"/>
-        <echo>${cp}</echo>
+        <echo>${cp}</echo> -->
 
         <!-- Execute the sample class with or without the aspects -->
-        <java classname="org.oslo.console.cli.CommandLine" fork="false" classpathref="execute.path" />
+        <!--<java classname="org.oslo.console.cli.CommandLine" fork="true" classpathref="execute.path" />-->
     </goal>
 
     <goal name="oslo:start:server" prereqs="oslo:cleanup, oslo:aspectwerkz:preprocess">
