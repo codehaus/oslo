@@ -74,6 +74,7 @@
     <goal name="oslo:execute:sample"> <!--prereqs="oslo:aspectwerkz:preprocess">-->
         <!-- ClassPath for the sample file -->
         <path id="execute.path">
+            <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
             <path refid="maven.dependency.classpath"/>
             <pathelement path="${maven.build.dir}/classes"/>
         </path>
