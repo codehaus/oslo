@@ -1,16 +1,16 @@
 package org.oslo.server;
 
 import junit.framework.TestCase;
-import org.oslo.metrics.sequence.SequenceMetric;
 import org.oslo.server.prevayler.datamodel.metric.Metric;
+import org.oslo.metrics.sequence.SequenceMetric;
 
 import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
  * User: christian
- * Date: May 21, 2003
- * Time: 7:54:12 PM
+ * Date: Jun 25, 2003
+ * Time: 10:00:23 PM
  * To change this template use Options | File Templates.
  */
 public class MetricProcesserTest extends TestCase {

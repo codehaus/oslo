@@ -5,9 +5,14 @@ import org.oslo.server.prevayler.system.RantSystem;
 import org.oslo.server.MetricProcesser;
 import org.oslo.server.prevayler.datamodel.metric.Metric;
 import org.prevayler.Prevayler;
+import org.prevayler.implementation.SnapshotPrevayler;
 import org.oslo.server.prevayler.datamodel.process.Process;
 import org.oslo.server.prevayler.datamodel.group.MetricGroup;
 import org.oslo.server.prevayler.transaction.process.ProcessCreateTransaction;
+import org.oslo.server.prevayler.transaction.process.ProcessUpdateTransaction;
+import org.oslo.server.prevayler.transaction.metric.MetricCreateTransaction;
+import org.oslo.server.prevayler.transaction.group.MetricGroupCreateTransaction;
+import org.oslo.server.prevayler.transaction.group.MetricGroupUpdateTransaction;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -101,7 +106,6 @@ public class WorkerThread extends Thread {
      * so the selector will resume watching this channel.
      */
     public synchronized void drainChannel(SelectionKey key) throws Exception {
-        StringBuffer stringBuffer = new StringBuffer();
         SocketChannel channel = (SocketChannel) key.channel();
         int count;
         buffer.clear(); // Empty buffer
@@ -117,17 +121,7 @@ public class WorkerThread extends Thread {
 
             // Send the data; may not go all at once
             while (buffer.hasRemaining()) {
-                // Open a file channel and append the data
-                //RandomAccessFile randomAccessFile = new RandomAccessFile("sequence.txt", )
-                //FileOutputStream fileOutputStream = new FileOutputStream("sequence.txt", true);
-                //FileChannel fileChannel = fileOutputStream.getChannel();
-
-                //fileChannel.write(buffer);
-                //fileChannel.close();
-                //fileOutputStream.close();
-                //channel.write(buffer);
-                //stringBuffer.append(buffer.getChar());
-                //fileOutputStream.write(buffer.get());
+                // Read data into the byteArrayOutputStream
                 byteArrayOutputStream.write(buffer.get());
             }
 
@@ -146,61 +140,72 @@ public class WorkerThread extends Thread {
             MetricProcesser metricProcesser = MetricProcesser.getInstance();
 
             try {
+                // Ok we now have a metric. We need to add this to the datastore
+                // The datastore is based on a processID with attached groups
+                // for each Metric type
+                // ID -- Metric type 1
+                //         -- Measurement 1
+                //         -- Measurement 2
+                PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
+                Prevayler prevayler = prevaylerPersister.getPrevayler();
+                RantSystem rantSystem = (RantSystem) prevayler.prevalentSystem();
+
                 ArrayList metrics = metricProcesser.parseMetrics(new String(bytes));
                 Iterator metricsIterator = metrics.iterator();
 
                 while (metricsIterator.hasNext()) {
-                    String metricString = (String)metricsIterator.next();
+                    String metricString = (String) metricsIterator.next();
                     Metric metric = metricProcesser.processMetric(metricString);
 
-                    // Ok we now have a metric. We need to add this to the datastore
-                    // The datastore is based on a processID with attached groups
-                    // for each Metric type
-                    // ID -- Metric type 1
-                    //         -- Measurement 1
-                    //         -- Measurement 2
-                    PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
-                    Prevayler prevayler = prevaylerPersister.getPrevayler();
-                    RantSystem rantSystem = (RantSystem) prevayler.prevalentSystem();
-
+                    // Get process
                     Process process = rantSystem.getProcess(metric.getProcessId());
 
+                    // Create process if needed
                     if (process == null) {
-                        ProcessCreateTransaction processCreateTransaction = new ProcessCreateTransaction(metric.getProcessId());
+                        ProcessCreateTransaction processCreateTransaction = new ProcessCreateTransaction(new Process(metric.getProcessId()));
                         process = (Process) processCreateTransaction.executeUsing(prevayler);
-
-                        // Ok add the data we need to the process in question
-                        process.addMetricGroup(new MetricGroup(metric.getPluginName()));
-                        MetricGroup metricGroup = process.getMetricGroup(metric.getPluginName());
-                        metricGroup.addMetric(metric);
-                    } else {
-                        MetricGroup metricGroup = process.getMetricGroup(metric.getPluginName());
-
-                        if (metricGroup == null) {
-                            metricGroup = process.addMetricGroup(new MetricGroup(metric.getPluginName()));
-                        }
-
-                        metricGroup.addMetric(metric);
                     }
 
+                    MetricGroup metricGroup = process.getMetricGroup(metric.getPluginName());
+
+                    if(metricGroup == null) {
+                        process.addMetricGroup(new MetricGroup(metric.getPluginName()));
+                        metricGroup = process.getMetricGroup(metric.getPluginName());
+                    }
+
+                    // Save metric
+                    //MetricCreateTransaction metricCreateTransaction = new MetricCreateTransaction(metric);
+                    //metricCreateTransaction.executeUsing(prevayler);
+
+                    // Get metricgroup
+                    //MetricGroup metricGroup = rantSystem.getMetricGroup(metric.getPluginName());
+
+                    // If metricgroup is empty create it
+                    /*if(metricGroup == null) {
+                        MetricGroupCreateTransaction metricGroupCreateTransaction = new MetricGroupCreateTransaction(metric.getProcessId() + metric.getPluginName());
+                        metricGroup = (MetricGroup)metricGroupCreateTransaction.executeUsing(prevayler);
+                    } */
+
+                    // Update Metric Group with metric
+                    metricGroup.addMetric(metric);
+                    //MetricGroupUpdateTransaction metricGroupUpdateTransaction = new MetricGroupUpdateTransaction(metricGroup);
+                    //metricGroup = (MetricGroup)metricGroupUpdateTransaction.executeUsing(prevayler);
+
+
+                    // Update process with metric group
+                    //process.addMetricGroup(metricGroup);
+                    ProcessUpdateTransaction processCreateTransaction = new ProcessUpdateTransaction(process);
+                    process = (Process)processCreateTransaction.executeUsing(prevayler);
+
+                    // Take snapshot
                     System.out.println("[LOGGING] Metric:" + metric.getKey() + " Original: " + metricString);
                 }
+
+                // Save data in prevayler
+                prevaylerPersister.save();
             } catch (Exception e) {
                 e.printStackTrace();  //To change body of catch statement use Options | File Templates.
             }
-            // Ok get the prevayler object, save the data to it..
-/*            PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
-            Prevayler prevayler = prevaylerPersister.getPrevayler();
-
-            RantSystem rantSystem = (RantSystem) prevayler.prevalentSystem();
-            PerformanceMetricCreateTransaction transaction = new PerformanceMetricCreateTransaction(rantSystem.nextPerformanceMetricId(), new String(bytes), "Tull_Method", "192.168.0.1", (long) 0, (long) 1, (long) 1);
-
-            try {
-                PerformanceMetric performanceMetric = (PerformanceMetric) transaction.executeUsing(prevayler);
-                System.out.println("classname = " + performanceMetric.getClassName());
-            } catch (Exception e) {
-                e.printStackTrace();  //To change body of catch statement use Options | File Templates.
-            }  */
         }
 
         if (count < 0) {
@@ -218,4 +223,5 @@ public class WorkerThread extends Thread {
         // Sleep this thread
         this.wait();
     }
+
 }

@@ -5,7 +5,11 @@ import org.prevayler.util.clock.Clock;
 
 import java.util.HashMap;
 import java.util.Date;
+import java.util.Iterator;
+
 import org.oslo.server.prevayler.datamodel.process.Process;
+import org.oslo.server.prevayler.datamodel.group.MetricGroup;
+import org.oslo.server.prevayler.datamodel.metric.Metric;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,30 +20,10 @@ import org.oslo.server.prevayler.datamodel.process.Process;
  */
 public class RantSystem implements ClockedSystem {
 
-    private final HashMap performanceMetrics = new HashMap();
-    private final HashMap byClass = new HashMap();
     private final HashMap processes = new HashMap();
+    private final HashMap metricgroups = new HashMap();
+    private final HashMap metrics = new HashMap();
     private static long processId = 0;
-
-/*    public PerformanceMetric getPerformanceMetric(int id) {
-        return (PerformanceMetric) performanceMetrics.get(new Integer(id));
-    }
-
-    public void addPerformanceMetric(PerformanceMetric performanceMetric) {
-        performanceMetrics.put(new Integer(performanceMetric.getId()), performanceMetric);
-
-        if (!byClass.containsKey(performanceMetric.getClassName()))
-            byClass.put(performanceMetric.getClassName(), performanceMetric);
-    }
-
-    public Map getPerformanceMetricsByClass() {
-        return byClass;
-    }
-
-    public int nextPerformanceMetricId() {
-        return performanceMetrics.size();
-    }*/
-
 
     public void advanceClockTo(Date date) {
     }
@@ -51,7 +35,7 @@ public class RantSystem implements ClockedSystem {
     /**
      * Process related issues
      */
-    public void addProcess(Process process) throws Exception {
+    public synchronized void addProcess(Process process) throws Exception {
         processes.put(process.getProcessID(), process);
     }
 
@@ -59,34 +43,70 @@ public class RantSystem implements ClockedSystem {
         return Long.toString(processId++);
     }
 
-    public Process getProcess(String processId) {
+    public synchronized Process getProcess(String processId) {
         return (Process)processes.get(processId);
+    }
+
+    public synchronized void updateProcess(Process process) throws Exception {
+        processes.put(process.getProcessID(), process);
+    }
+
+    public Iterator getProcesses() {
+        return processes.values().iterator();
+    }
+
+    public synchronized void deleteProcess(Process process) {
+        processes.remove(process.getProcessID());
     }
 
     /**
      * Methods for checking consistence of data in the prevayler system
      */
-    public boolean checkCreateProcess(String processId) {
-        if(!processes.containsKey(processId))
+    public boolean checkCreateProcess(Process process) {
+        if(!processes.containsKey(process.getProcessID()))
             return true;
 
         return false;
     }
 
-    // Ensure the integrity of data being stored
-    /**public boolean checkCreatePerformanceMetric(int id, String className, String methodeName, String ip, long measurementDateMSec, long innTimeMSec, long outTimeMSec) {
-        if (className == null || className.trim().equals(""))
-            return false;
+    public boolean checkUpdateProcess(Process process) throws Exception {
+        if(processes.containsKey(process.getProcessID())) {
+            // Ensure that we are updating an existing process not replacing an old one
+            //Process oldProcess = (Process)processes.get(process.getProcessID());
 
-        if (methodeName == null || methodeName.trim().equals(""))
+            //if(oldProcess.getTimestamp() != process.getTimestamp())
+            //    throw new Exception("Tried to replace existing process with new, check id of current process");
+            return true;
+        } else {
             return false;
+        }
+    }
 
-        if (ip == null || ip.trim().equals(""))
+    public boolean checkCreateMetricGroup(String pluginName) {
+        if(!metricgroups.containsKey(pluginName))
+            return true;
+        else
             return false;
+    }
 
-        if (getPerformanceMetric(id) != null)
+    public boolean checkUpdateMetricGroup(MetricGroup metricGroup) throws Exception {
+        if(metricgroups.containsKey(metricGroup.getPluginName())) {
+            return true;
+        } else {
             return false;
+        }
+    }
 
-        return true;
-    }  **/
+    public boolean checkCreateMetric(String transactionID) {
+        if(!metrics.containsKey(transactionID))
+            return true;
+        else
+            return false;
+    }
+
+    public void removeProcess(Process process) {
+        if(processes.containsKey(process.getProcessID()))
+            processes.remove(process.getProcessID());
+    }
+
 }
