@@ -1,21 +1,21 @@
-package org.oslo.server;
+package org.oslo.rantserver;
 
-import junit.framework.TestCase;
-import org.oslo.server.prevayler.datamodel.metric.Metric;
-import org.oslo.metrics.sequence.SequenceMetric;
+import org.oslo.common.datamodel.metric.Metric;
+import org.oslo.plugins.sequenceplugin.metric.SequenceMetric;
 
 import java.util.ArrayList;
-import java.io.File;
+
+import junit.framework.TestCase;
 
 /**
  * Created by IntelliJ IDEA.
  * User: christian
- * Date: Jun 25, 2003
- * Time: 10:00:23 PM
+ * Date: Jul 25, 2003
+ * Time: 3:17:31 PM
  * To change this template use Options | File Templates.
  */
 public class MetricProcesserTest extends TestCase {
-    public void testProcessMetric() throws Exception {
+        public void testProcessMetric() throws Exception {
         MetricProcesser metricProcesser = MetricProcesser.getInstance();
         assertNotNull(metricProcesser);
 

@@ -1,14 +1,14 @@
-package org.oslo.plugins.sequence;
+package org.oslo.plugins.sequenceplugin.plugin;
 
 import junit.framework.TestCase;
-import org.oslo.metrics.sequence.SequenceMetric;
-import org.oslo.server.prevayler.persistance.PrevaylerPersister;
-import org.oslo.server.prevayler.system.RantSystem;
 import org.prevayler.Prevayler;
 import org.oslo.common.datamodel.process.Process;
 import org.oslo.common.datamodel.group.MetricGroup;
-import org.oslo.server.prevayler.transaction.process.ProcessCreateTransaction;
-import org.oslo.server.prevayler.transaction.process.ProcessRemoveTransaction;
+import org.oslo.rantserver.prevayler.persistance.PrevaylerPersister;
+import org.oslo.rantserver.prevayler.transaction.process.ProcessCreateTransaction;
+import org.oslo.rantserver.prevayler.transaction.process.ProcessRemoveTransaction;
+import org.oslo.rantserver.prevayler.system.RantSystem;
+import org.oslo.plugins.sequenceplugin.metric.SequenceMetric;
 
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -110,30 +110,5 @@ public class SequencePluginTest extends TestCase {
         assertNotNull(processId);
         assertEquals("1234567", processId);
     }
-
-    public void testExecuteGenerateSequenceDiagram() throws Exception {
-        SequencePlugin sequencePlugin = new SequencePlugin();
-        //String command = "GENERATESEQUENCEDIAGRAM <processID> <startingClass> <startingMentho>";
-
-        PrevaylerPersister prevaylerPersister = PrevaylerPersister.getInstance();
-        Prevayler prevayler = prevaylerPersister.getPrevayler();
-        RantSystem rantSystem = (RantSystem) prevayler.prevalentSystem();
-
-        Iterator processes = rantSystem.getProcesses();
-
-        assertNotNull(processes);
-
-        String sequenceDiagram = null;
-
-        // Generate commands
-        String command = "1" + " org.MainClass main";
-        StringTokenizer tokenizer = new StringTokenizer(command);
-        sequenceDiagram = sequencePlugin.executeGenerateSequenceDiagram(tokenizer);
-
-        assertNotNull(sequenceDiagram);
-
-
-
-        assertEquals("(org.MainClass main\n\t(org.Level1 level1<> \"void\" \n\t\t(org.Level2 level2<> \"void\" ))\n\t(org.MainClass level0<> \"void\" )\n)", sequenceDiagram);
-    }
 }
+
