@@ -1,13 +1,18 @@
 <project xmlns:m="maven" xmlns:jxr="jxr" xmlns:j="jelly:core" xmlns:u="jelly:util">
     <property name="aspectwerkz.classpath" refid="maven.dependency.classpath"/>
+
     <property environment="env"/>
 
-    <taskdef name="compileSourceMetaData"
-        classname="aspectwerkz.definition.metadata.task.SourceFileMetaDataCompilerTask"
-        classpath="${aspectwerkz.classpath}"/>
+    <!--    <taskdef name="compileSourceMetaData"
+            classname="aspectwerkz.definition.metadata.task.SourceFileMetaDataCompilerTask"
+            classpath="${aspectwerkz.classpath}"/>
 
-    <taskdef name="compileClassMetaData"
-        classname="aspectwerkz.definition.metadata.task.ClassFileMetaDataCompilerTask"
+        <taskdef name="compileClassMetaData"
+            classname="aspectwerkz.definition.metadata.task.ClassFileMetaDataCompilerTask"
+            classpath="${aspectwerkz.classpath}"/>-->
+
+    <taskdef name="offlineTransformation"
+        classname="org.codehaus.aspectwerkz.task.OfflineTransformationTask"
         classpath="${aspectwerkz.classpath}"/>
 
     <!-- =================================================== -->
@@ -28,37 +33,45 @@
         <mkdir dir="${maven.build.dir}/_metaData"/>
 
         <!-- Create the meta data weave -->
-        <java classname="aspectwerkz.definition.metadata.ClassFileMetaDataCompiler" fork="true" classpathref="maven.dependency.classpath" output="java.output">
+        <!--<java classname="aspectwerkz.definition.metadata.ClassFileMetaDataCompiler" fork="true" classpathref="maven.dependency.classpath" output="java.output">
             <arg value="${maven.src.dir}/aspectwerkz/oslo.xml"/>
             <arg value="${maven.build.dir}/classes"/>
             <arg value="${maven.build.dir}/_metaData"/>
-        </java>
+        </java>-->
 
         <!-- Preprocess the class files -->
-        <java classname="org.cs3.jmangler.offline.starter.Main" classpathref="maven.dependency.classpath" fork="true" append="true" output="java.output">
+        <path id="aspectwerkz.fixed.classpath">
+            <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
+            <path refid="maven.dependency.classpath"/>
+        </path>
+
+        <java classname="org.cs3.jmangler.offline.starter.Main" classpathref="aspectwerkz.fixed.classpath" fork="true" append="true" output="java.output">
             <jvmarg value="-Daspectwerkz.definition.file=${maven.src.dir}/aspectwerkz/oslo.xml"/>
             <jvmarg value="-Daspectwerkz.src.dir="/>
-<!--            <jvmarg value="-Daspectwerkz.home=${env.ASPECTWERKZ_HOME}"/> -->
             <jvmarg value="-Daspectwerkz.home=${maven.src.dir}"/>
             <jvmarg value="-Daspectwerkz.metadata.dir=${maven.build.dir}/_metaData"/>
             <jvmarg value="-Dorg.cs3.jmangler.initfile=${maven.src.dir}/config/jmangler-order.config"/>
-<!--            <jvmarg value="-Dorg.cs3.jmangler.initfile=${env.ASPECTWERKZ_HOME}/config/jmangler-order.config"/>-->
             <arg value="--cp"/>
             <arg value="${maven.build.dir}/classes"/>
             <arg value="--tcp"/>
-<!--            <arg value="${env.ASPECTWERKZ_HOME}/lib/aspectwerkz-0.4.jar"/>-->
-            <arg value="${maven.src.dir}/../devlib/aspectwerkz/jars/aspectwerkz-0.4.jar"/>
+            <arg value="${basedir}/devlib/aspectwerkz/jars/aspectwerkz-0.5.jar"/>
             <arg value="--cf"/>
-<!--            <arg value="${env.ASPECTWERKZ_HOME}/config/aspectwerkz.conf"/>-->
             <arg value="${maven.src.dir}/config/aspectwerkz.conf"/>
         </java>
+
+
+        <!--<offlineTransformation
+            aspectWerkzHome="${env.ASPECTWERKZ_HOME}"
+            definitionFile="${maven.src.dir}/aspectwerkz/oslo.xml"
+            classesDir="${maven.build.dir}/classes"
+            metaDataDir="${maven.build.dir}/_metaData"/>-->
 
         <!-- Load the output and display it -->
         <loadfile property="message" srcFile="java.output"/>
         <echo>${message}</echo>
     </goal>
 
-    <goal name="oslo:execute:sample">
+    <goal name="oslo:execute:sample"> <!--prereqs="oslo:aspectwerkz:preprocess">-->
         <!-- ClassPath for the sample file -->
         <path id="execute.path">
             <path refid="maven.dependency.classpath"/>
@@ -68,7 +81,7 @@
         <!-- Execute the sample class with or without the aspects -->
         <java classname="org.oslo.sample.SampleMain" fork="true" classpathref="execute.path" output="java.output">
             <jvmarg value="-Daspectwerkz.definition.file=${maven.src.dir}/aspectwerkz/oslo.xml"/>
-            <jvmarg value="-Daspectwerkz.home=${env.ASPECTWERKZ_HOME}"/>
+            <jvmarg value="-Daspectwerkz.home=${basedir}"/>
             <jvmarg value="-Daspectwerkz.metadata.dir=${maven.build.dir}/_metaData"/>
         </java>
 
@@ -80,6 +93,7 @@
     <goal name="oslo:start:server">
         <!-- ClassPath for the sample file -->
         <path id="execute.path">
+            <pathelement path="${basedir}/devlib/bcel/jars/bcel.jar"/>
             <path refid="maven.dependency.classpath"/>
             <pathelement path="${maven.build.dir}/classes"/>
         </path>
